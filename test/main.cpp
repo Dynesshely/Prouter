@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../includes/includes.hpp"
+#include "../src/core/prouter.cpp"
 
 int main() {
 
@@ -26,11 +26,13 @@ int main() {
 
   std::cout << std::endl;
 
-  int f[1000];
+  auto tracer = prouter().traceLoop();
+
+  int f[1000], i = 3;
   f[1] = 1;
   f[2] = 1;
 
-  for (int i = 3; i <= 7; ++i) {
+  for (tracer.trace(i); i <= 7; ++i) {
     f[i] = f[i - 1] + f[i - 2];
     std::cout << f[i] << std::endl;
   }

@@ -1,4 +1,6 @@
+#include <cstddef>
 #include <cstdlib>
+#include <functional>
 #include <iostream>
 #include <vector>
 
@@ -7,6 +9,8 @@ private:
   int value;
 
   std::vector<int> usedValues;
+
+  std::function<void(int)> onChangedFunc = NULL;
 
 public:
   pint() : value(0) { usedValues.push_back(0); }
@@ -20,6 +24,9 @@ public:
   void setValue(int val) {
     value = val;
     usedValues.push_back(value);
+
+    if (onChangedFunc != NULL)
+      onChangedFunc(val);
   }
 
   int &operator[](int index) {
@@ -265,6 +272,11 @@ public:
   }
 
   operator int() const { return value; }
+
+  pint onChanged(std::function<void(int)> func) {
+    onChangedFunc = func;
+    return *this;
+  }
 };
 
 std::ostream &operator<<(std::ostream &os, const pint &obj) {
