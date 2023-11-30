@@ -3,5 +3,5 @@
 class prouter {
 private:
 public:
-  loopTracer traceLoop() { return loopTracer(); }
+    static loopTracer traceLoop() { return {}; }
 };

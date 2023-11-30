@@ -6,45 +6,45 @@ int main() {
 
 #define int pint
 
-  // int a = 10;
-  // a + 5;
-  // std::cout << a << std::endl;
-  // a += 10;
-  // a *= 2;
-  // a -= 30;
-  // a /= 2;
-  // std::cout << a << std::endl;
-  // ++a, a++;
-  // --a, a--;
-  // std::cout << a << std::endl;
+//    int a = 10;
+//    a + 5;
+//    std::cout << a << std::endl;
+//    a += 10;
+//    a *= 2;
+//    a -= 30;
+//    a /= 2;
+//    std::cout << a << std::endl;
+//    ++a, a++;
+//    --a, a--;
+//    std::cout << a << std::endl;
+//
+//    std::cout << std::endl;
+//
+//    for (int i = 0; i < a.historicalValuesCount(); ++i) {
+//        std::cout << i[i] << ": " << a[i] << std::endl;
+//    }
+//
+//    std::cout << std::endl;
 
-  // std::cout << std::endl;
+    auto tracer = prouter::traceLoop();
 
-  //   for (int i = 0; i < a.historicalValuesCount(); ++i) {
-  //     std::cout << i[i] << ": " << a[i] << std::endl;
-  //   }
+    int f[1000], i, j = 1;
+    f[1] = 1;
+    f[2] = 1;
 
-  //   std::cout << std::endl;
+    tracer.trace(&i)
+//            .trace(&j)
+            ;
 
-  auto tracer = prouter().traceLoop();
+    for (i = 1; i <= 7; ++i, tracer.loop()) {
+        if (i >= 3)
+            f[i] = f[i - 1] + f[i - 2];
+        i = i;
+//        ++j;
+        std::cout << f[i] << std::endl;
+    }
 
-  int f[1000], i, j = 1;
-  f[1] = 1;
-  f[2] = 1;
+    tracer.end();
 
-  tracer.trace(&i)
-      //  .trace(&j)
-      ;
-
-  for (i = 1; i <= 7; ++i, tracer.loop()) {
-    if (i >= 3)
-      f[i] = f[i - 1] + f[i - 2];
-    i = i;
-    //    ++j;
-    std::cout << f[i] << std::endl;
-  }
-
-  tracer.end();
-
-  std::cout << std::endl << tracer.tableText() << std::endl;
+    std::cout << std::endl << tracer.tableText() << std::endl;
 }
