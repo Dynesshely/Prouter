@@ -13,9 +13,11 @@ private:
   std::function<void(int)> onChangedFunc = NULL;
 
 public:
-  pint() : value(0) { usedValues.push_back(0); }
+  pint() : value(0) { setValue(0); }
 
-  pint(int val) : value(val) { usedValues.push_back(val); }
+  pint(int val) : value(val) { setValue(val); }
+
+  int *address() { return &value; }
 
   int getValue() { return value; }
 
