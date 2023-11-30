@@ -27,7 +27,7 @@ public:
         rows[0]->loopId = 0;
     }
 
-    loopTracer trace(pint *v) {
+    loopTracer &trace(pint *v) {
         targets.push_back(v);
         auto currentCol = colCount++;
         updateValue(currentCol, v->getValue());
@@ -35,14 +35,14 @@ public:
         return *this;
     }
 
-    loopTracer loop() {
+    loopTracer &loop() {
         auto row = new loopRow();
         row->loopId = (int) rows.size();
         rows.push_back(row);
         return *this;
     }
 
-    loopTracer end() {
+    loopTracer &end() {
         rows.pop_back();
 
         for (auto &target: targets)

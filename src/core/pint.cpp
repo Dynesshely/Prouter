@@ -262,9 +262,9 @@ public:
         return *this;
     }
 
-    operator int() const { return value; }
+    operator int() const { return getValue(); }
 
-    pint onChanged(std::function<void(int)> func) {
+    pint &onChanged(std::function<void(int)> func) {
         onChangedFunc = std::move(func);
         return *this;
     }
