@@ -1,4 +1,5 @@
 #include "../pint.cpp"
+#include "../utils/textBuilder.cpp"
 #include <string>
 #include <vector>
 
@@ -13,6 +14,7 @@ private:
 
     std::vector<pint *> targets;
     std::vector<loopRow *> rows;
+    std::vector<int> colLength;
 
     void updateValue(int colIndex, int val) {
         if (rows.back()->pints.size() < colCount)
@@ -29,11 +31,20 @@ public:
 
     loopTracer &trace(pint *v) {
         targets.push_back(v);
+        colLength.push_back((int) std::to_string(v->getValue()).length());
+
         auto currentCol = colCount++;
+
         updateValue(currentCol, v->getValue());
-        v->onChanged([this, currentCol](int val) { updateValue(currentCol, val); });
+
+        v->onChanged([this, currentCol, v](int val) {
+            updateValue(currentCol, val);
+            colLength[currentCol] = std::max(colLength[currentCol],
+                                             (int) (textBuilder::varChangeHistoryText(v).length() / sizeof(int) + 1));
+        });
         return *this;
     }
+
 
     loopTracer &loop() {
         auto row = new loopRow();
@@ -54,16 +65,20 @@ public:
     std::string tableText() {
         std::string text;
 
+        text += textBuilder::buildText(' ', (int) (rows.size() / sizeof(int)));
+        text += " | ";
+        for (int i = 0; i < colCount; ++i) {
+            text += *textBuilder::meetLength(targets[i]->nameAddress(), colLength[i], ' ');
+            text += " | ";
+        }
+        text += "\n";
+
         for (auto &row: rows) {
             text += std::to_string(row->loopId) + " | ";
 
-            for (auto &pint: row->pints) {
-                for (int k = 0; k < pint.historicalValuesCount(); ++k) {
-                    text += std::to_string(pint[k]);
-
-                    if (k < pint.historicalValuesCount() - 1)
-                        text += " -> ";
-                }
+            for (int j = 0; j < row->pints.size(); ++j) {
+                auto t = textBuilder::varChangeHistoryText(&row->pints[j]);
+                text += *textBuilder::meetLength(&t, colLength[j], ' ');
                 text += " | ";
             }
 

@@ -7,6 +7,8 @@ class pint {
 private:
     int value;
 
+    std::string varName;
+
     std::vector<int> usedValues;
 
     std::function<void(int)> onChangedFunc = nullptr;
@@ -26,6 +28,19 @@ public:
 
         if (onChangedFunc != nullptr)
             onChangedFunc(val);
+    }
+
+    pint &named(std::string str) {
+        varName = std::move(str);
+        return *this;
+    }
+
+    std::string name() {
+        return varName;
+    }
+
+    std::string *nameAddress() {
+        return &varName;
     }
 
     int &operator[](int index) {
