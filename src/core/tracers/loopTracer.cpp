@@ -1,5 +1,6 @@
 #include "../pint.cpp"
 #include "../utils/textBuilder.cpp"
+#include "../utils/typeProcessor.cpp"
 #include <string>
 #include <vector>
 
@@ -20,7 +21,16 @@ private:
         if (rows.back()->pints.size() < colCount)
             rows.back()->pints.emplace_back(val);
         else
-            rows[rows.size() - 1]->pints[colIndex] = val;
+            rows.back()->pints[colIndex] = val;
+
+        colLength[colIndex] = std::max(
+            colLength[colIndex],
+            textBuilder::actualWidth(
+                textBuilder::varChangeHistoryText(
+                    &(rows.back()->pints[colIndex])
+                )
+            )
+        );
     }
 
 public:
@@ -31,24 +41,30 @@ public:
 
     loopTracer &trace(pint *v) {
         targets.push_back(v);
-        colLength.push_back((int) std::to_string(v->getValue()).length());
+        colLength.push_back(
+            textBuilder::actualWidth(
+                std::to_string(v->getValue())
+            )
+        );
 
         auto currentCol = colCount++;
 
         updateValue(currentCol, v->getValue());
 
-        v->onChanged([this, currentCol, v](int val) {
-            updateValue(currentCol, val);
-            colLength[currentCol] = std::max(colLength[currentCol],
-                                             (int) (textBuilder::varChangeHistoryText(v).length() / sizeof(int) + 1));
-        });
+        v->onChanged(
+            [this, currentCol](int val) {
+                updateValue(currentCol, val);
+            }
+        );
         return *this;
     }
-
 
     loopTracer &loop() {
         auto row = new loopRow();
         row->loopId = (int) rows.size();
+        for (auto &item: rows.back()->pints) {
+            row->pints.emplace_back(item.getValue());
+        }
         rows.push_back(row);
         return *this;
     }
@@ -65,10 +81,21 @@ public:
     std::string tableText() {
         std::string text;
 
-        text += textBuilder::buildText(' ', (int) (rows.size() / sizeof(int)));
+        text += textBuilder::buildText(
+            ' ',
+            textBuilder::actualWidth(
+                std::to_string(
+                    typeProcessor::actualSize(rows.size())
+                )
+            )
+        );
         text += " | ";
         for (int i = 0; i < colCount; ++i) {
-            text += *textBuilder::meetLength(targets[i]->nameAddress(), colLength[i], ' ');
+            text += textBuilder::meetLength(
+                targets[i]->name(),
+                colLength[i],
+                ' '
+            );
             text += " | ";
         }
         text += "\n";
@@ -77,8 +104,11 @@ public:
             text += std::to_string(row->loopId) + " | ";
 
             for (int j = 0; j < row->pints.size(); ++j) {
-                auto t = textBuilder::varChangeHistoryText(&row->pints[j]);
-                text += *textBuilder::meetLength(&t, colLength[j], ' ');
+                text += textBuilder::meetLength(
+                    textBuilder::varChangeHistoryText(&(row->pints[j])),
+                    colLength[j],
+                    ' '
+                );
                 text += " | ";
             }
 
