@@ -3,6 +3,8 @@
 #include <utility>
 #include <vector>
 
+#pragma once
+
 class pint {
 private:
     int value;

@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#pragma once
+
 struct loopRow {
     int loopId{};
     std::vector<pint> pints;

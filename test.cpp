@@ -5,6 +5,7 @@
 int main() {
 
 #define int pint
+#define double pnum<double>
 
     auto tracer = prouter::traceLoop();
 
@@ -24,4 +25,9 @@ int main() {
     tracer.end();
 
     std::cout << std::endl << tracer.tableText() << std::endl;
+
+    double a = 3.0;
+    a = 4.0;
+
+    std::cout << textBuilder::varChangeHistoryText(&a) << std::endl;
 }
