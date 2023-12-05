@@ -29,6 +29,7 @@ int main() {
 
 double a = 3.0;
 a = 4.0;
+a *= 2.0;
 
 std::cout << textBuilder::varChangeHistoryText(&a) << std::endl;
 ```
@@ -36,7 +37,7 @@ std::cout << textBuilder::varChangeHistoryText(&a) << std::endl;
 Output:
 
 ```text
-3.000000 -> 4.000000
+3.000000 -> 4.000000 -> 8.000000
 ```
 
 ## Trace a loop

@@ -27,6 +27,7 @@ int main() {
 
     double a = 3.0;
     a = 4.0;
+    a *= 2.0;
 
     std::cout << textBuilder::varChangeHistoryText(&a) << std::endl;
 }
