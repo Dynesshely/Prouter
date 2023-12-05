@@ -1,9 +1,9 @@
+#pragma once
+
 #include <cstdlib>
 #include <iostream>
 #include <utility>
 #include <vector>
-
-#pragma once
 
 template<typename T>
 class pnum {
@@ -46,15 +46,15 @@ public:
         return &varName;
     }
 
-    T &operator[](T index) {
+    T &operator[](int index) {
         if (index >= 0.0 && index < usedValues.size())
             return usedValues[index];
         else
             exit(-1);
     }
 
-    T &operator[](const pnum &index) {
-        if (index >= 0.0 && index.getValue() < usedValues.size())
+    T &operator[](const pint &index) {
+        if (index >= 0 && index.getValue() < usedValues.size())
             return usedValues[index.getValue()];
         else
             exit(-1);

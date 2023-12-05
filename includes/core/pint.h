@@ -1,5 +1,4 @@
-#ifndef PINT_H
-#define PINT_H
+#pragma once
 
 #include <cstdlib>
 #include <iostream>
@@ -226,5 +225,4 @@ pint &operator++(pint &obj);
 
 pint &operator--(pint &obj);
 
-#endif // PINT_H
-
+#include "../../src/core/pint.cpp"

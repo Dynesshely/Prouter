@@ -1,5 +1,8 @@
 #include <iostream>
 
+//#include "./includes/includes.h"
+
+#include "./src/core/pint.cpp"
 #include "./src/core/prouter.cpp"
 
 int main() {

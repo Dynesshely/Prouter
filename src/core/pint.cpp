@@ -1,9 +1,9 @@
+#pragma once
+
 #include <cstdlib>
 #include <iostream>
 #include <utility>
 #include <vector>
-
-#pragma once
 
 class pint {
 private:

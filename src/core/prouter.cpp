@@ -1,3 +1,5 @@
+#pragma once
+
 #include "./tracers/loopTracer.cpp"
 
 class prouter {

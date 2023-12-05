@@ -1,3 +1,5 @@
+#pragma once
+
 class typeProcessor {
 private:
 public:

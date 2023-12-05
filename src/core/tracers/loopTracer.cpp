@@ -1,10 +1,10 @@
+#pragma once
+
 #include "../pint.cpp"
 #include "../utils/textBuilder.cpp"
 #include "../utils/typeProcessor.cpp"
 #include <string>
 #include <vector>
-
-#pragma once
 
 struct loopRow {
     int loopId{};

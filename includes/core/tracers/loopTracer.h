@@ -1,5 +1,4 @@
-#ifndef LOOPTRACER_H
-#define LOOPTRACER_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -32,4 +31,4 @@ public:
     std::string tableText();
 };
 
-#endif // LOOPTRACER_H
+#include "../../../src/core/tracers/loopTracer.cpp"
