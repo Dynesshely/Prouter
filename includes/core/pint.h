@@ -6,13 +6,16 @@
 #include <vector>
 #include <functional>
 
-class loopTracer;
+#include "tracers/loopTracer.h"
 
 class pint {
 private:
     int value;
+
     std::string varName;
+
     std::vector<int> usedValues;
+
     std::function<void(int)> onChangedFunc = nullptr;
 
 public:
@@ -32,7 +35,7 @@ public:
 
     std::string *nameAddress();
 
-    pint &traceBy(class loopTracer *tracer);
+//    pint &traceBy(loopTracer *tracer);
 
     int &operator[](int index);
 
@@ -138,17 +141,29 @@ public:
 
     bool operator!=(int val) const;
 
-    friend bool operator<(int lhs, const pint &rhs);
+    friend bool operator<(int lhs, const pint &rhs) {
+        return lhs < rhs.getValue();
+    }
 
-    friend bool operator>(int lhs, const pint &rhs);
+    friend bool operator>(int lhs, const pint &rhs) {
+        return lhs > rhs.getValue();
+    }
 
-    friend bool operator<=(int lhs, const pint &rhs);
+    friend bool operator<=(int lhs, const pint &rhs) {
+        return lhs <= rhs.getValue();
+    }
 
-    friend bool operator>=(int lhs, const pint &rhs);
+    friend bool operator>=(int lhs, const pint &rhs) {
+        return lhs >= rhs.getValue();
+    }
 
-    friend bool operator==(int lhs, const pint &rhs);
+    friend bool operator==(int lhs, const pint &rhs) {
+        return lhs == rhs.getValue();
+    }
 
-    friend bool operator!=(int lhs, const pint &rhs);
+    friend bool operator!=(int lhs, const pint &rhs) {
+        return lhs != rhs.getValue();
+    }
 
     bool operator<(pint &val) const;
 
@@ -162,17 +177,29 @@ public:
 
     bool operator!=(pint &val) const;
 
-    friend bool operator<(const pint &lhs, const pint &rhs);
+    friend bool operator<(const pint &lhs, const pint &rhs) {
+        return lhs.getValue() < rhs.getValue();
+    }
 
-    friend bool operator>(const pint &lhs, const pint &rhs);
+    friend bool operator>(const pint &lhs, const pint &rhs) {
+        return lhs.getValue() > rhs.getValue();
+    }
 
-    friend bool operator<=(const pint &lhs, const pint &rhs);
+    friend bool operator<=(const pint &lhs, const pint &rhs) {
+        return lhs.getValue() <= rhs.getValue();
+    }
 
-    friend bool operator>=(const pint &lhs, const pint &rhs);
+    friend bool operator>=(const pint &lhs, const pint &rhs) {
+        return lhs.getValue() >= rhs.getValue();
+    }
 
-    friend bool operator==(const pint &lhs, const pint &rhs);
+    friend bool operator==(const pint &lhs, const pint &rhs) {
+        return lhs.getValue() == rhs.getValue();
+    }
 
-    friend bool operator!=(const pint &lhs, const pint &rhs);
+    friend bool operator!=(const pint &lhs, const pint &rhs) {
+        return lhs.getValue() != rhs.getValue();
+    }
 
     pint &operator=(int &val);
 

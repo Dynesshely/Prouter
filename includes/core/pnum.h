@@ -16,154 +16,269 @@ private:
     std::function<void(T)> onChangedFunc = nullptr;
 
 public:
-    pnum();
+    pnum() : value(0) { setValue(0); }
 
-    pnum(T val);
+    pnum(T val) : value(val) { setValue(val); }
 
-    T *address();
+    T *address() { return &value; }
 
-    [[nodiscard]] T getValue() const;
+    [[nodiscard]] T getValue() const { return value; }
 
-    void setValue(T val);
+    void setValue(T val) {
+        value = val;
+        usedValues.push_back(value);
 
-    pnum &named(std::string str);
+        if (onChangedFunc != nullptr)
+            onChangedFunc(val);
+    }
 
-    std::string name();
+    pnum &named(std::string str) {
+        varName = std::move(str);
+        return *this;
+    }
 
-    std::string *nameAddress();
+    std::string name() {
+        return varName;
+    }
 
-    T &operator[](int index);
+    std::string *nameAddress() {
+        return &varName;
+    }
 
-    T &operator[](const pint &index);
+    T &operator[](int index) {
+        if (index >= 0.0 && index < usedValues.size())
+            return usedValues[index];
+        else
+            exit(-1);
+    }
 
-    T historicalValuesCount();
+    T &operator[](const pint &index) {
+        if (index >= 0 && index.getValue() < usedValues.size())
+            return usedValues[index.getValue()];
+        else
+            exit(-1);
+    }
 
-    pnum &operator++(int);
+    T historicalValuesCount() { return (T) usedValues.size(); }
 
-    pnum &operator--(int);
+    pnum &operator++(int) {
+        setValue(value + 1);
+        return *this;
+    }
 
-    T operator+(T val) const;
+    pnum &operator--(int) {
+        setValue(value - 1);
+        return *this;
+    }
 
-    T operator-(T val) const;
+    T operator+(T val) const { return value + val; }
 
-    T operator*(T val) const;
+    T operator-(T val) const { return value - val; }
 
-    T operator/(T val) const;
+    T operator*(T val) const { return value * val; }
 
-    friend T operator+(T lhs, const pnum &rhs);
+    T operator/(T val) const { return value / val; }
 
-    friend T operator-(T lhs, const pnum &rhs);
+    friend T operator+(T lhs, const pnum &rhs) {
+        return lhs + rhs.getValue();
+    }
 
-    friend T operator*(T lhs, const pnum &rhs);
+    friend T operator-(T lhs, const pnum &rhs) {
+        return lhs - rhs.getValue();
+    }
 
-    friend T operator/(T lhs, const pnum &rhs);
+    friend T operator*(T lhs, const pnum &rhs) {
+        return lhs * rhs.getValue();
+    }
 
-    pnum operator+(pnum &val) const;
+    friend T operator/(T lhs, const pnum &rhs) {
+        return lhs / rhs.getValue();
+    }
 
-    pnum operator-(pnum &val) const;
+    pnum operator+(pnum &val) const { return {value + val.getValue()}; }
 
-    pnum operator*(pnum &val) const;
+    pnum operator-(pnum &val) const { return {value - val.getValue()}; }
 
-    pnum operator/(pnum &val) const;
+    pnum operator*(pnum &val) const { return {value * val.getValue()}; }
 
-    friend pnum operator+(const pnum &lhs, const pnum &rhs);
+    pnum operator/(pnum &val) const { return {value / val.getValue()}; }
 
-    friend pnum operator-(const pnum &lhs, const pnum &rhs);
+    friend pnum operator+(const pnum &lhs, const pnum &rhs) {
+        return {lhs + rhs.getValue()};
+    }
 
-    friend pnum operator*(const pnum &lhs, const pnum &rhs);
+    friend pnum operator-(const pnum &lhs, const pnum &rhs) {
+        return {lhs - rhs.getValue()};
+    }
 
-    friend pnum operator/(const pnum &lhs, const pnum &rhs);
+    friend pnum operator*(const pnum &lhs, const pnum &rhs) {
+        return {lhs * rhs.getValue()};
+    }
 
-    bool operator<(T val) const;
+    friend pnum operator/(const pnum &lhs, const pnum &rhs) {
+        return {lhs / rhs.getValue()};
+    }
 
-    bool operator>(T val) const;
+    bool operator<(T val) const { return value < val; }
 
-    bool operator<=(T val) const;
+    bool operator>(T val) const { return value > val; }
 
-    bool operator>=(T val) const;
+    bool operator<=(T val) const { return value <= val; }
 
-    bool operator==(T val) const;
+    bool operator>=(T val) const { return value >= val; }
 
-    bool operator!=(T val) const;
+    bool operator==(T val) const { return value == val; }
 
-    friend bool operator<(T lhs, const pnum &rhs);
+    bool operator!=(T val) const { return value != val; }
 
-    friend bool operator>(T lhs, const pnum &rhs);
+    friend bool operator<(T lhs, const pnum &rhs) {
+        return lhs < rhs.getValue();
+    }
 
-    friend bool operator<=(T lhs, const pnum &rhs);
+    friend bool operator>(T lhs, const pnum &rhs) {
+        return lhs > rhs.getValue();
+    }
 
-    friend bool operator>=(T lhs, const pnum &rhs);
+    friend bool operator<=(T lhs, const pnum &rhs) {
+        return lhs <= rhs.getValue();
+    }
 
-    friend bool operator==(T lhs, const pnum &rhs);
+    friend bool operator>=(T lhs, const pnum &rhs) {
+        return lhs >= rhs.getValue();
+    }
 
-    friend bool operator!=(T lhs, const pnum &rhs);
+    friend bool operator==(T lhs, const pnum &rhs) {
+        return lhs == rhs.getValue();
+    }
 
-    bool operator<(pnum &val) const;
+    friend bool operator!=(T lhs, const pnum &rhs) {
+        return lhs != rhs.getValue();
+    }
 
-    bool operator>(pnum &val) const;
+    bool operator<(pnum &val) const { return value < val.getValue(); }
 
-    bool operator<=(pnum &val) const;
+    bool operator>(pnum &val) const { return value > val.getValue(); }
 
-    bool operator>=(pnum &val) const;
+    bool operator<=(pnum &val) const { return value <= val.getValue(); }
 
-    bool operator==(pnum &val) const;
+    bool operator>=(pnum &val) const { return value >= val.getValue(); }
 
-    bool operator!=(pnum &val) const;
+    bool operator==(pnum &val) const { return value == val.getValue(); }
 
-    friend bool operator<(const pnum &lhs, const pnum &rhs);
+    bool operator!=(pnum &val) const { return value != val.getValue(); }
 
-    friend bool operator>(const pnum &lhs, const pnum &rhs);
+    friend bool operator<(const pnum &lhs, const pnum &rhs) {
+        return lhs.getValue() < rhs.getValue();
+    }
 
-    friend bool operator<=(const pnum &lhs, const pnum &rhs);
+    friend bool operator>(const pnum &lhs, const pnum &rhs) {
+        return lhs.getValue() > rhs.getValue();
+    }
 
-    friend bool operator>=(const pnum &lhs, const pnum &rhs);
+    friend bool operator<=(const pnum &lhs, const pnum &rhs) {
+        return lhs.getValue() <= rhs.getValue();
+    }
 
-    friend bool operator==(const pnum &lhs, const pnum &rhs);
+    friend bool operator>=(const pnum &lhs, const pnum &rhs) {
+        return lhs.getValue() >= rhs.getValue();
+    }
 
-    friend bool operator!=(const pnum &lhs, const pnum &rhs);
+    friend bool operator==(const pnum &lhs, const pnum &rhs) {
+        return lhs.getValue() == rhs.getValue();
+    }
 
-    pnum &operator=(T &val);
+    friend bool operator!=(const pnum &lhs, const pnum &rhs) {
+        return lhs.getValue() != rhs.getValue();
+    }
 
-    pnum &operator=(const T &val);
+    pnum &operator=(T &val) {
+        setValue(val);
+        return *this;
+    }
 
-    pnum &operator=(const pnum &other);
+    pnum &operator=(const T &val) {
+        setValue(val);
+        return *this;
+    }
 
-    operator T() const;
+    pnum &operator=(const pnum &other) {
+        if (this != &other)
+            setValue(other.getValue());
+        return *this;
+    }
 
-    pnum &onChanged(std::function<void(T)> func);
+    operator T() const { return getValue(); }
+
+    pnum &onChanged(std::function<void(T)> func) {
+        onChangedFunc = std::move(func);
+        return *this;
+    }
 };
 
 template<typename T>
-std::ostream &operator<<(std::ostream &os, const pnum<T> &obj);
+std::ostream &operator<<(std::ostream &os, const pnum<T> &obj) {
+    os << obj.getValue();
+    return os;
+}
 
 template<typename T>
-pnum<T> &operator+=(pnum<T> &obj, T val);
+pnum<T> &operator+=(pnum<T> &obj, T val) {
+    obj.setValue(obj.getValue() + val);
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator-=(pnum<T> &obj, T val);
+pnum<T> &operator-=(pnum<T> &obj, T val) {
+    obj.setValue(obj.getValue() - val);
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator*=(pnum<T> &obj, T val);
+pnum<T> &operator*=(pnum<T> &obj, T val) {
+    obj.setValue(obj.getValue() * val);
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator/=(pnum<T> &obj, T val);
+pnum<T> &operator/=(pnum<T> &obj, T val) {
+    obj.setValue(obj.getValue() / val);
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator+=(pnum<T> &obj, pnum<T> &val);
+pnum<T> &operator+=(pnum<T> &obj, pnum<T> &val) {
+    obj.setValue(obj.getValue() + val.getValue());
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator-=(pnum<T> &obj, pnum<T> &val);
+pnum<T> &operator-=(pnum<T> &obj, pnum<T> &val) {
+    obj.setValue(obj.getValue() - val.getValue());
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator*=(pnum<T> &obj, pnum<T> &val);
+pnum<T> &operator*=(pnum<T> &obj, pnum<T> &val) {
+    obj.setValue(obj.getValue() * val.getValue());
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator/=(pnum<T> &obj, pnum<T> &val);
+pnum<T> &operator/=(pnum<T> &obj, pnum<T> &val) {
+    obj.setValue(obj.getValue() / val.getValue());
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator++(pnum<T> &obj);
+pnum<T> &operator++(pnum<T> &obj) {
+    obj.setValue(obj.getValue() + 1);
+    return obj;
+}
 
 template<typename T>
-pnum<T> &operator--(pnum<T> &obj);
+pnum<T> &operator--(pnum<T> &obj) {
+    obj.setValue(obj.getValue() - 1);
+    return obj;
+}
 
 #include "../../src/core/pnum.cpp"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../pnum.cpp"
+#include "../../../includes/core/pnum.h"
 
 class textBuilder {
 private:

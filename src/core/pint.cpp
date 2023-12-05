@@ -1,291 +1,233 @@
-#pragma once
 
-#include <cstdlib>
-#include <iostream>
-#include <utility>
-#include <vector>
+pint::pint() : value(0) { setValue(0); }
 
-class pint {
-private:
-    int value;
+pint::pint(int val) : value(val) { setValue(val); }
 
-    std::string varName;
+int *pint::address() { return &value; }
 
-    std::vector<int> usedValues;
+[[nodiscard]] int pint::getValue() const { return value; }
 
-    std::function<void(int)> onChangedFunc = nullptr;
+void pint::setValue(int val) {
+    value = val;
+    usedValues.push_back(value);
 
-public:
-    pint() : value(0) { setValue(0); }
+    if (onChangedFunc != nullptr)
+        onChangedFunc(val);
+}
 
-    pint(int val) : value(val) { setValue(val); }
+pint &pint::named(std::string str) {
+    varName = std::move(str);
+    return *this;
+}
 
-    int *address() { return &value; }
+std::string pint::name() {
+    return varName;
+}
 
-    [[nodiscard]] int getValue() const { return value; }
+std::string *pint::nameAddress() {
+    return &varName;
+}
 
-    void setValue(int val) {
-        value = val;
-        usedValues.push_back(value);
+//pint &pint::traceBy(loopTracer *tracer) {
+//    tracer->trace(this);
+//    return *this;
+//}
 
-        if (onChangedFunc != nullptr)
-            onChangedFunc(val);
-    }
+int &pint::operator[](int index) {
+    if (index >= 0 && index < usedValues.size())
+        return usedValues[index];
+    else
+        exit(-1);
+}
 
-    pint &named(std::string str) {
-        varName = std::move(str);
-        return *this;
-    }
+int &pint::operator[](const pint &index) {
+    if (index >= 0 && index.getValue() < usedValues.size())
+        return usedValues[index.getValue()];
+    else
+        exit(-1);
+}
 
-    std::string name() {
-        return varName;
-    }
+int pint::historicalValuesCount() { return (int) usedValues.size(); }
 
-    std::string *nameAddress() {
-        return &varName;
-    }
+pint &pint::operator++(int) {
+    setValue(value + 1);
+    return *this;
+}
 
-    int &operator[](int index) {
-        if (index >= 0 && index < usedValues.size())
-            return usedValues[index];
-        else
-            exit(-1);
-    }
+pint &pint::operator--(int) {
+    setValue(value - 1);
+    return *this;
+}
 
-    int &operator[](const pint &index) {
-        if (index >= 0 && index.getValue() < usedValues.size())
-            return usedValues[index.getValue()];
-        else
-            exit(-1);
-    }
+int pint::operator+(int val) const { return value + val; }
 
-    int historicalValuesCount() { return (int) usedValues.size(); }
+int pint::operator-(int val) const { return value - val; }
 
-    pint &operator++(int) {
-        setValue(value + 1);
-        return *this;
-    }
+int pint::operator*(int val) const { return value * val; }
 
-    pint &operator--(int) {
-        setValue(value - 1);
-        return *this;
-    }
+int pint::operator/(int val) const { return value / val; }
 
-    int operator+(int val) const { return value + val; }
+int pint::operator%(int val) const { return value % val; }
 
-    int operator-(int val) const { return value - val; }
+int pint::operator&(int val) const { return value & val; }
 
-    int operator*(int val) const { return value * val; }
+int pint::operator|(int val) const { return value | val; }
 
-    int operator/(int val) const { return value / val; }
+int pint::operator^(int val) const { return value ^ val; }
 
-    int operator%(int val) const { return value % val; }
+int pint::operator<<(int val) const { return value << val; }
 
-    int operator&(int val) const { return value & val; }
+int pint::operator>>(int val) const { return value >> val; }
 
-    int operator|(int val) const { return value | val; }
+pint pint::operator+(pint &val) const { return {value + val.getValue()}; }
 
-    int operator^(int val) const { return value ^ val; }
+pint pint::operator-(pint &val) const { return {value - val.getValue()}; }
 
-    int operator<<(int val) const { return value << val; }
+pint pint::operator*(pint &val) const { return {value * val.getValue()}; }
 
-    int operator>>(int val) const { return value >> val; }
+pint pint::operator/(pint &val) const { return {value / val.getValue()}; }
 
-    friend int operator+(int lhs, const pint &rhs) {
-        return lhs + rhs.getValue();
-    }
+pint pint::operator%(pint &val) const { return {value % val.getValue()}; }
 
-    friend int operator-(int lhs, const pint &rhs) {
-        return lhs - rhs.getValue();
-    }
+pint pint::operator&(pint &val) const { return {value & val.getValue()}; }
 
-    friend int operator*(int lhs, const pint &rhs) {
-        return lhs * rhs.getValue();
-    }
+pint pint::operator|(pint &val) const { return {value | val.getValue()}; }
 
-    friend int operator/(int lhs, const pint &rhs) {
-        return lhs / rhs.getValue();
-    }
+pint pint::operator^(pint &val) const { return {value ^ val.getValue()}; }
 
-    friend int operator%(int lhs, const pint &rhs) {
-        return lhs % rhs.getValue();
-    }
+pint pint::operator<<(pint &val) const { return {value << val.getValue()}; }
 
-    friend int operator&(int lhs, const pint &rhs) {
-        return lhs & rhs.getValue();
-    }
+pint pint::operator>>(pint &val) const { return {value >> val.getValue()}; }
 
-    friend int operator|(int lhs, const pint &rhs) {
-        return lhs | rhs.getValue();
-    }
+bool pint::operator<(int val) const { return value < val; }
 
-    friend int operator^(int lhs, const pint &rhs) {
-        return lhs ^ rhs.getValue();
-    }
+bool pint::operator>(int val) const { return value > val; }
 
-    friend int operator<<(int lhs, const pint &rhs) {
-        return lhs << rhs.getValue();
-    }
+bool pint::operator<=(int val) const { return value <= val; }
 
-    friend int operator>>(int lhs, const pint &rhs) {
-        return lhs >> rhs.getValue();
-    }
+bool pint::operator>=(int val) const { return value >= val; }
 
-    pint operator+(pint &val) const { return {value + val.getValue()}; }
+bool pint::operator==(int val) const { return value == val; }
 
-    pint operator-(pint &val) const { return {value - val.getValue()}; }
+bool pint::operator!=(int val) const { return value != val; }
 
-    pint operator*(pint &val) const { return {value * val.getValue()}; }
+bool pint::operator<(pint &val) const { return value < val.getValue(); }
 
-    pint operator/(pint &val) const { return {value / val.getValue()}; }
+bool pint::operator>(pint &val) const { return value > val.getValue(); }
 
-    pint operator%(pint &val) const { return {value % val.getValue()}; }
+bool pint::operator<=(pint &val) const { return value <= val.getValue(); }
 
-    pint operator&(pint &val) const { return {value & val.getValue()}; }
+bool pint::operator>=(pint &val) const { return value >= val.getValue(); }
 
-    pint operator|(pint &val) const { return {value | val.getValue()}; }
+bool pint::operator==(pint &val) const { return value == val.getValue(); }
 
-    pint operator^(pint &val) const { return {value ^ val.getValue()}; }
+bool pint::operator!=(pint &val) const { return value != val.getValue(); }
 
-    pint operator<<(pint &val) const { return {value << val.getValue()}; }
+pint &pint::operator=(int &val) {
+    setValue(val);
+    return *this;
+}
 
-    pint operator>>(pint &val) const { return {value >> val.getValue()}; }
+pint &pint::operator=(const int &val) {
+    setValue(val);
+    return *this;
+}
 
-    friend pint operator+(const pint &lhs, const pint &rhs) {
-        return {lhs + rhs.getValue()};
-    }
+pint &pint::operator=(const pint &other) {
+    if (this != &other)
+        setValue(other.getValue());
+    return *this;
+}
 
-    friend pint operator-(const pint &lhs, const pint &rhs) {
-        return {lhs - rhs.getValue()};
-    }
+pint::operator int() const { return getValue(); }
 
-    friend pint operator*(const pint &lhs, const pint &rhs) {
-        return {lhs * rhs.getValue()};
-    }
+pint &pint::onChanged(std::function<void(int)> func) {
+    onChangedFunc = std::move(func);
+    return *this;
+}
 
-    friend pint operator/(const pint &lhs, const pint &rhs) {
-        return {lhs / rhs.getValue()};
-    }
+int operator+(int lhs, const pint &rhs) {
+    return lhs + rhs.getValue();
+}
 
-    friend pint operator%(const pint &lhs, const pint &rhs) {
-        return {lhs % rhs.getValue()};
-    }
+int operator-(int lhs, const pint &rhs) {
+    return lhs - rhs.getValue();
+}
 
-    friend pint operator&(const pint &lhs, const pint &rhs) {
-        return {lhs & rhs.getValue()};
-    }
+int operator*(int lhs, const pint &rhs) {
+    return lhs * rhs.getValue();
+}
 
-    friend pint operator|(const pint &lhs, const pint &rhs) {
-        return {lhs | rhs.getValue()};
-    }
+int operator/(int lhs, const pint &rhs) {
+    return lhs / rhs.getValue();
+}
 
-    friend pint operator^(const pint &lhs, const pint &rhs) {
-        return {lhs ^ rhs.getValue()};
-    }
+int operator%(int lhs, const pint &rhs) {
+    return lhs % rhs.getValue();
+}
 
-    friend pint operator<<(const pint &lhs, const pint &rhs) {
-        return {lhs << rhs.getValue()};
-    }
+int operator&(int lhs, const pint &rhs) {
+    return lhs & rhs.getValue();
+}
 
-    friend pint operator>>(const pint &lhs, const pint &rhs) {
-        return {lhs >> rhs.getValue()};
-    }
+int operator|(int lhs, const pint &rhs) {
+    return lhs | rhs.getValue();
+}
 
-    bool operator<(int val) const { return value < val; }
+int operator^(int lhs, const pint &rhs) {
+    return lhs ^ rhs.getValue();
+}
 
-    bool operator>(int val) const { return value > val; }
+int operator<<(int lhs, const pint &rhs) {
+    return lhs << rhs.getValue();
+}
 
-    bool operator<=(int val) const { return value <= val; }
+int operator>>(int lhs, const pint &rhs) {
+    return lhs >> rhs.getValue();
+}
 
-    bool operator>=(int val) const { return value >= val; }
+pint operator+(const pint &lhs, const pint &rhs) {
+    return {lhs + rhs.getValue()};
+}
 
-    bool operator==(int val) const { return value == val; }
+pint operator-(const pint &lhs, const pint &rhs) {
+    return {lhs - rhs.getValue()};
+}
 
-    bool operator!=(int val) const { return value != val; }
+pint operator*(const pint &lhs, const pint &rhs) {
+    return {lhs * rhs.getValue()};
+}
 
-    friend bool operator<(int lhs, const pint &rhs) {
-        return lhs < rhs.getValue();
-    }
+pint operator/(const pint &lhs, const pint &rhs) {
+    return {lhs / rhs.getValue()};
+}
 
-    friend bool operator>(int lhs, const pint &rhs) {
-        return lhs > rhs.getValue();
-    }
+pint operator%(const pint &lhs, const pint &rhs) {
+    return {lhs % rhs.getValue()};
+}
 
-    friend bool operator<=(int lhs, const pint &rhs) {
-        return lhs <= rhs.getValue();
-    }
+pint operator&(const pint &lhs, const pint &rhs) {
+    return {lhs & rhs.getValue()};
+}
 
-    friend bool operator>=(int lhs, const pint &rhs) {
-        return lhs >= rhs.getValue();
-    }
+pint operator|(const pint &lhs, const pint &rhs) {
+    return {lhs | rhs.getValue()};
+}
 
-    friend bool operator==(int lhs, const pint &rhs) {
-        return lhs == rhs.getValue();
-    }
+pint operator^(const pint &lhs, const pint &rhs) {
+    return {lhs ^ rhs.getValue()};
+}
 
-    friend bool operator!=(int lhs, const pint &rhs) {
-        return lhs != rhs.getValue();
-    }
+pint operator<<(const pint &lhs, const pint &rhs) {
+    return {lhs << rhs.getValue()};
+}
 
-    bool operator<(pint &val) const { return value < val.getValue(); }
+pint operator>>(const pint &lhs, const pint &rhs) {
+    return {lhs >> rhs.getValue()};
+}
 
-    bool operator>(pint &val) const { return value > val.getValue(); }
+// Below are out of `pint` class
 
-    bool operator<=(pint &val) const { return value <= val.getValue(); }
-
-    bool operator>=(pint &val) const { return value >= val.getValue(); }
-
-    bool operator==(pint &val) const { return value == val.getValue(); }
-
-    bool operator!=(pint &val) const { return value != val.getValue(); }
-
-    friend bool operator<(const pint &lhs, const pint &rhs) {
-        return lhs.getValue() < rhs.getValue();
-    }
-
-    friend bool operator>(const pint &lhs, const pint &rhs) {
-        return lhs.getValue() > rhs.getValue();
-    }
-
-    friend bool operator<=(const pint &lhs, const pint &rhs) {
-        return lhs.getValue() <= rhs.getValue();
-    }
-
-    friend bool operator>=(const pint &lhs, const pint &rhs) {
-        return lhs.getValue() >= rhs.getValue();
-    }
-
-    friend bool operator==(const pint &lhs, const pint &rhs) {
-        return lhs.getValue() == rhs.getValue();
-    }
-
-    friend bool operator!=(const pint &lhs, const pint &rhs) {
-        return lhs.getValue() != rhs.getValue();
-    }
-
-    pint &operator=(int &val) {
-        setValue(val);
-        return *this;
-    }
-
-    pint &operator=(const int &val) {
-        setValue(val);
-        return *this;
-    }
-
-    pint &operator=(const pint &other) {
-        if (this != &other)
-            setValue(other.getValue());
-        return *this;
-    }
-
-    operator int() const { return getValue(); }
-
-    pint &onChanged(std::function<void(int)> func) {
-        onChangedFunc = std::move(func);
-        return *this;
-    }
-};
 
 std::ostream &operator<<(std::ostream &os, const pint &obj) {
     os << obj.getValue();

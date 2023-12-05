@@ -1,14 +1,10 @@
 #include <iostream>
 
-//#include "./includes/includes.h"
-
-#include "./src/core/pint.cpp"
-#include "./src/core/prouter.cpp"
+#include "./includes/includes.h"
 
 int main() {
 
-#define int pint
-#define double pnum<double>
+#include "./includes/predefine.h"
 
     auto tracer = prouter::traceLoop();
 
@@ -19,7 +15,7 @@ int main() {
     tracer.trace(&i.named("i"))
           .trace(&fc.named("fc"));
 
-    for (; i <= 4; ++i, tracer.loop()) {
+    for (; i <= 10; ++i, tracer.loop()) {
         if (i >= 3)
             f[i] = f[i - 1] + f[i - 2];
         fc.setValue(f[i]);
