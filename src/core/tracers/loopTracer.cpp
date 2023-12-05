@@ -64,12 +64,12 @@ loopTracer &loopTracer::end() {
 std::string loopTracer::tableText() {
     std::string text;
 
+    auto firstColLen = typeProcessor::actualSize(rows.size() - 1);
+
     text += textBuilder::buildText(
         ' ',
         textBuilder::actualWidth(
-            std::to_string(
-                typeProcessor::actualSize(rows.size())
-            )
+            std::to_string(firstColLen)
         )
     );
     text += " | ";
@@ -81,6 +81,12 @@ std::string loopTracer::tableText() {
         );
         text += " | ";
     }
+    text += "\n";
+
+    text += textBuilder::buildText(
+        '-',
+        textBuilder::actualWidth(text) - 2
+    );
     text += "\n";
 
     for (auto &row: rows) {
