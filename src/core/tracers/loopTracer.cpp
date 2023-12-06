@@ -110,11 +110,6 @@ std::string loopTracer::tableText() {
             tmp += textBuilder::buildText("═", len - 3);
             tmp += "╣";
             tmp += "\n";
-//            for (int i: colIndex) {
-//                tmp[i + 2] = s[0];
-//                tmp[i + 3] = s[1];
-//                tmp[i + 4] = s[2];
-//            }
             *t += tmp;
         }
 
