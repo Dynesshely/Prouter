@@ -17,6 +17,8 @@ private:
     std::vector<loopRow *> rows;
     std::vector<int> colLength;
 
+    std::string tracerName;
+
     void updateValue(int colIndex, int val);
 
 public:
@@ -27,6 +29,8 @@ public:
     loopTracer &loop();
 
     loopTracer &end();
+
+    loopTracer &named(std::string str);
 
     std::string tableText();
 };

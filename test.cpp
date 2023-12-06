@@ -6,7 +6,7 @@ int main() {
 
 #include "./includes/predefine.h"
 
-    auto tracer = prouter::traceLoop();
+    auto tracer = prouter::traceLoop().named("loop 1");
 
     int f[1000], i = 1, fc;
     f[1] = 1;

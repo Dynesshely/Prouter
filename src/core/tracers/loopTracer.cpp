@@ -61,36 +61,116 @@ loopTracer &loopTracer::end() {
     return *this;
 }
 
+loopTracer &loopTracer::named(std::string str) {
+    tracerName = std::move(str);
+    return *this;
+}
+
 std::string loopTracer::tableText() {
     std::string text;
 
     auto firstColLen = typeProcessor::actualSize(rows.size() - 1);
+    auto maxRowLen = 0;
 
-    text += textBuilder::buildText(
-        ' ',
-        textBuilder::actualWidth(
-            std::to_string(firstColLen)
-        )
-    );
-    text += " | ";
-    for (int i = 0; i < colCount; ++i) {
-        text += textBuilder::meetLength(
-            targets[i]->name(),
-            colLength[i],
-            ' '
+    class textUtil {
+        std::string *t;
+        std::vector<int> colIndex;
+    public:
+        textUtil(std::string *src) {
+            t = src;
+        }
+
+        void colAt(int index) {
+            colIndex.push_back(index);
+        }
+
+        void appendLine(std::string s) {
+            *t += s;
+            *t += "\n";
+        }
+
+        void firstBar(int len) {
+            *t += "╔";
+            *t += textBuilder::buildText("═", len - 3);
+            *t += "╗";
+            *t += "\n";
+        }
+
+        void endBar(int len) {
+            *t += "╚";
+            *t += textBuilder::buildText("═", len - 3);
+            *t += "╝";
+            *t += "\n";
+        }
+
+        void middleSep(int len) {
+            std::string s = "╬";
+            std::string tmp;
+            tmp += "╠";
+            tmp += textBuilder::buildText("═", len - 3);
+            tmp += "╣";
+            tmp += "\n";
+//            for (int i: colIndex) {
+//                tmp[i + 2] = s[0];
+//                tmp[i + 3] = s[1];
+//                tmp[i + 4] = s[2];
+//            }
+            *t += tmp;
+        }
+
+        void title(const std::string &te, int len) {
+            firstBar(len);
+            *t += "║";
+            auto tlen = textBuilder::actualWidth(te);
+            auto presl = ((len - tlen) / 2) - 2;
+            *t += textBuilder::buildText(' ', presl);
+            *t += te;
+            *t += textBuilder::buildText(' ', len - tlen - presl - 3);
+            *t += "║";
+            *t += "\n";
+            middleSep(len);
+//            *t += "╠";
+//            *t += textBuilder::buildText("═", len - 3);
+//            *t += "╣";
+//            *t += "\n";
+        }
+    };
+
+    std::string firstRow;
+    textUtil util(&text);
+
+    {
+        firstRow += "║ ";
+        int cursor = 3;
+        firstRow += textBuilder::buildText(
+            ' ',
+            textBuilder::actualWidth(
+                std::to_string(firstColLen)
+            )
         );
-        text += " | ";
+        cursor += textBuilder::actualWidth(std::to_string(firstColLen)) + 4;
+        firstRow += " ║ ";
+        util.colAt(cursor);
+        for (int i = 0; i < colCount; ++i) {
+            firstRow += textBuilder::meetLength(
+                targets[i]->name(),
+                colLength[i],
+                ' '
+            );
+            firstRow += " ║ ";
+            cursor += 4 + textBuilder::actualWidth(targets[i]->name());
+            util.colAt(cursor);
+        }
     }
-    text += "\n";
 
-    text += textBuilder::buildText(
-        '-',
-        textBuilder::actualWidth(text) - 2
-    );
-    text += "\n";
+    maxRowLen = textBuilder::actualWidth(firstRow) - 4 - 2 * colCount;
+
+    util.title(tracerName, maxRowLen);
+
+    util.appendLine(firstRow);
 
     for (auto &row: rows) {
-        text += std::to_string(row->loopId) + " | ";
+        text += "║ " + std::to_string(row->loopId) + " ║ ";
 
         for (int j = 0; j < row->pints.size(); ++j) {
             text += textBuilder::meetLength(
@@ -98,11 +178,13 @@ std::string loopTracer::tableText() {
                 colLength[j],
                 ' '
             );
-            text += " | ";
+            text += " ║ ";
         }
 
         text += "\n";
     }
+
+    util.endBar(maxRowLen);
 
     return text;
 }

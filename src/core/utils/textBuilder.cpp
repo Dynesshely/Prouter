@@ -54,6 +54,13 @@ public:
         return text;
     }
 
+    static std::string buildText(std::string s, int repeat) {
+        std::string text;
+        for (int i = 0; i < repeat; ++i)
+            text += s;
+        return text;
+    }
+
     static int actualWidth(const std::string &str) {
         return (int) str.length();
     }
