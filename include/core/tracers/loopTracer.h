@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "../pint.h"
+#include "../../utils/textBuilder.h"
 
 struct loopRow {
     int loopId{};

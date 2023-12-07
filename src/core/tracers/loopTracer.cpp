@@ -1,6 +1,3 @@
-#include "../utils/textBuilder.cpp"
-#include "../utils/typeProcessor.cpp"
-
 void loopTracer::updateValue(int colIndex, int val) {
     if (rows.back()->pints.size() < colCount)
         rows.back()->pints.emplace_back(val);
@@ -69,7 +66,7 @@ loopTracer &loopTracer::named(std::string str) {
 std::string loopTracer::tableText() {
     std::string text;
 
-    auto firstColLen = typeProcessor::actualSize(rows.size() - 1);
+    auto firstColLen = textBuilder::actualSize(rows.size() - 1);
     auto maxRowLen = 0;
 
     class textUtil {

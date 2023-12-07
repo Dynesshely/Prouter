@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.26)
-project(test)
+project(Prouter)
 
 set(CMAKE_CXX_STANDARD 17)
+#SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -Wall -O2")
 
-add_executable(test test.cpp)
+add_subdirectory(include)
+#add_subdirectory(src)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+add_executable(testDaemon tests/testDaemon.cpp)
+
+enable_testing()
