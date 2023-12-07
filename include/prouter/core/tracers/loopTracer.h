@@ -2,8 +2,9 @@
 
 #include <string>
 #include <vector>
-#include "../pint.h"
-#include "../../utils/textBuilder.h"
+
+#include <prouter/core/pint.h>
+#include <prouter/utils/textBuilder.h>
 
 struct loopRow {
     int loopId{};
@@ -36,4 +37,4 @@ public:
     std::string tableText();
 };
 
-#include "../../../src/core/tracers/loopTracer.cpp"
+#include "../../../../src/core/tracers/loopTracer.cpp"

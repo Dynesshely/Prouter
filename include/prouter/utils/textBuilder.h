@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/pnum.h"
+#include <prouter/core/pnum.h>
 
 class textBuilder {
 private:
@@ -32,4 +32,4 @@ public:
     static int actualSize(size_t s);
 };
 
-#include "../../src/utils/textBuilder.cpp"
+#include "../../../src/utils/textBuilder.cpp"

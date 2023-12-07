@@ -5,7 +5,7 @@
 #include <vector>
 #include <functional>
 
-#include "./pint.h"
+#include <prouter/core/pint.h>
 
 template<typename T>
 class pnum {
@@ -281,4 +281,4 @@ pnum<T> &operator--(pnum<T> &obj) {
     return obj;
 }
 
-#include "../../src/core/pnum.cpp"
+#include "../../../src/core/pnum.cpp"

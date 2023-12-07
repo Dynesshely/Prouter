@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "prouterIncludes.h"
+#include <prouter/prouterIncludes.h>
 
 int main() {
 
-#include "prouterPredefine.h"
+#include <prouter/prouterPredefine.h>
 
     auto tracer = prouter::traceLoop().named("loop 1");
 

@@ -1,4 +1,3 @@
-
 pint::pint() : value(0) { setValue(0); }
 
 pint::pint(int val) : value(val) { setValue(val); }

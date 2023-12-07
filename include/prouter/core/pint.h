@@ -6,7 +6,7 @@
 #include <vector>
 #include <functional>
 
-#include "tracers/loopTracer.h"
+#include <prouter/core/tracers/loopTracer.h>
 
 class pint {
 private:
@@ -252,4 +252,4 @@ pint &operator++(pint &obj);
 
 pint &operator--(pint &obj);
 
-#include "../../src/core/pint.cpp"
+#include "../../../src/core/pint.cpp"
