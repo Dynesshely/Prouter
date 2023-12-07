@@ -10,6 +10,9 @@ add_subdirectory(include)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+# Libraries
+include_directories(${PROJECT_SOURCE_DIR}/lib/tabulate/include)
+
 add_executable(testDaemon tests/testDaemon.cpp)
 
 enable_testing()

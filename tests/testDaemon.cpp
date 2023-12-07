@@ -21,9 +21,9 @@ int main() {
         fc.setValue(f[i]);
     }
 
-    tracer.end();
+    tracer.end().tableText(std::cout);
 
-    std::cout << std::endl << tracer.tableText() << std::endl;
+    std::cout << std::endl;
 
     double a = 3.0;
     a = 4.0;

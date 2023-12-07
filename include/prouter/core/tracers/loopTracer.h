@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <tabulate/table.hpp>
+
 #include <prouter/core/pint.h>
 #include <prouter/utils/textBuilder.h>
 
@@ -34,7 +36,7 @@ public:
 
     loopTracer &named(std::string str);
 
-    std::string tableText();
+    loopTracer &tableText(std::ostream &stream);
 };
 
 #include "../../../../src/core/tracers/loopTracer.cpp"

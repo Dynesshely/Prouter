@@ -63,120 +63,36 @@ loopTracer &loopTracer::named(std::string str) {
     return *this;
 }
 
-std::string loopTracer::tableText() {
-    std::string text;
+loopTracer &loopTracer::tableText(std::ostream &stream) {
+    tabulate::Table table;
 
-    auto firstColLen = textBuilder::actualSize(rows.size() - 1);
-    auto maxRowLen = 0;
+    tabulate::Table::Row_t header;
+    header.emplace_back("");
+    for (auto &target: targets)
+        header.emplace_back(target->name());
+    table.add_row(header);
 
-    class textUtil {
-        std::string *t;
-        std::vector<int> colIndex;
-    public:
-        textUtil(std::string *src) {
-            t = src;
-        }
-
-        void colAt(int index) {
-            colIndex.push_back(index);
-        }
-
-        void appendLine(std::string s) {
-            *t += s;
-            *t += "\n";
-        }
-
-        void firstBar(int len) {
-            *t += "╔";
-            *t += textBuilder::buildText("═", len - 3);
-            *t += "╗";
-            *t += "\n";
-        }
-
-        void endBar(int len) {
-            *t += "╚";
-            *t += textBuilder::buildText("═", len - 3);
-            *t += "╝";
-            *t += "\n";
-        }
-
-        void middleSep(int len) {
-            std::string s = "╬";
-            std::string tmp;
-            tmp += "╠";
-            tmp += textBuilder::buildText("═", len - 3);
-            tmp += "╣";
-            tmp += "\n";
-            *t += tmp;
-        }
-
-        void title(const std::string &te, int len) {
-            firstBar(len);
-            *t += "║";
-            auto tlen = textBuilder::actualWidth(te);
-            auto presl = ((len - tlen) / 2) - 2;
-            *t += textBuilder::buildText(' ', presl);
-            *t += te;
-            *t += textBuilder::buildText(' ', len - tlen - presl - 3);
-            *t += "║";
-            *t += "\n";
-            middleSep(len);
-//            *t += "╠";
-//            *t += textBuilder::buildText("═", len - 3);
-//            *t += "╣";
-//            *t += "\n";
-        }
-    };
-
-    std::string firstRow;
-    textUtil util(&text);
-
-    {
-        firstRow += "║ ";
-        int cursor = 3;
-        firstRow += textBuilder::buildText(
-            ' ',
-            textBuilder::actualWidth(
-                std::to_string(firstColLen)
-            )
-        );
-        cursor += textBuilder::actualWidth(std::to_string(firstColLen)) + 4;
-        firstRow += " ║ ";
-        util.colAt(cursor);
-        for (int i = 0; i < colCount; ++i) {
-            firstRow += textBuilder::meetLength(
-                targets[i]->name(),
-                colLength[i],
-                ' '
-            );
-            firstRow += " ║ ";
-            cursor += 4 + textBuilder::actualWidth(targets[i]->name());
-            util.colAt(cursor);
-        }
+    for (auto &i: rows) {
+        tabulate::Table::Row_t row;
+        row.emplace_back(std::to_string(i->loopId));
+        for (auto &pint: i->pints)
+            row.emplace_back(textBuilder::varChangeHistoryText(&pint));
+        table.add_row(row);
     }
 
-    maxRowLen = textBuilder::actualWidth(firstRow) - 4 - 2 * colCount;
+//    // Default: ╔╦╗╠╬╣╚╩╝
+//    table.format()
+//         .corner_top_left("╔")
+//         .border_top("╦")
+//         .corner_top_right("╗")
+//         .border_left("║")
+//         .border_right("║")
+//         .border("═")
+//         .corner_bottom_left("╚")
+//         .corner_bottom_right("╝");
 
-    util.title(tracerName, maxRowLen);
+    table.print(stream);
+    stream << std::endl;
 
-    util.appendLine(firstRow);
-
-    for (auto &row: rows) {
-        text += "║ " + std::to_string(row->loopId) + " ║ ";
-
-        for (int j = 0; j < row->pints.size(); ++j) {
-            text += textBuilder::meetLength(
-                textBuilder::varChangeHistoryText(&(row->pints[j])),
-                colLength[j],
-                ' '
-            );
-            text += " ║ ";
-        }
-
-        text += "\n";
-    }
-
-    util.endBar(maxRowLen);
-
-    return text;
+    return *this;
 }
