@@ -64,6 +64,8 @@ loopTracer &loopTracer::named(std::string str) {
 }
 
 loopTracer &loopTracer::tableText(std::ostream &stream) {
+    int totalRowsCount = (int) rows.size() + 1;
+    int totalColsCount = (int) targets.size() + 1;
     tabulate::Table table;
 
     tabulate::Table::Row_t header;
@@ -80,16 +82,42 @@ loopTracer &loopTracer::tableText(std::ostream &stream) {
         table.add_row(row);
     }
 
-//    // Default: ╔╦╗╠╬╣╚╩╝
-//    table.format()
-//         .corner_top_left("╔")
-//         .border_top("╦")
-//         .corner_top_right("╗")
-//         .border_left("║")
-//         .border_right("║")
-//         .border("═")
-//         .corner_bottom_left("╚")
-//         .corner_bottom_right("╝");
+    // Default:
+    // ╔═══╦═══════╗
+    // ╠═══╣       ║
+    // ╠═══╬═══╦═══╣
+    // ╚═══╩═══╩═══╝
+
+    for (int i = 0; i < totalRowsCount; ++i) {
+        for (int j = 0; j < totalColsCount; ++j) {
+            table[i][j].format()
+                       .corner_top_left("╠")
+                       .corner_top_right("╣")
+                       .corner_bottom_left("╚")
+                       .corner_bottom_right("╝")
+                       .border_top("═")
+                       .border_bottom("═")
+                       .border_left("║")
+                       .border_right("║");
+            if (i == 0) {
+                table[i][j].format()
+                           .corner_top_left("╔")
+                           .corner_top_right("╗");
+            }
+            if (j > 0) {
+                table[i][j].format()
+                           .corner_top_left("╬")
+                           .corner_bottom_left("╬");
+
+                if (i == 0)
+                    table[i][j].format()
+                               .corner_top_left("╦");
+                if (i == totalRowsCount - 1)
+                    table[i][j].format()
+                               .corner_bottom_left("╩");
+            }
+        }
+    }
 
     table.print(stream);
     stream << std::endl;
