@@ -80,42 +80,7 @@ tabulate::Table loopTracer::table() {
         table.add_row(row);
     }
 
-    // Default:
-    // ╔═══╦═══════╗
-    // ╠═══╣       ║
-    // ╠═══╬═══╦═══╣
-    // ╚═══╩═══╩═══╝
-
-    for (int i = 0; i < totalRowsCount; ++i) {
-        for (int j = 0; j < totalColsCount; ++j) {
-            table[i][j].format()
-                       .corner_top_left("╠")
-                       .corner_top_right("╣")
-                       .corner_bottom_left("╚")
-                       .corner_bottom_right("╝")
-                       .border_top("═")
-                       .border_bottom("═")
-                       .border_left("║")
-                       .border_right("║");
-            if (i == 0) {
-                table[i][j].format()
-                           .corner_top_left("╔")
-                           .corner_top_right("╗");
-            }
-            if (j > 0) {
-                table[i][j].format()
-                           .corner_top_left("╬")
-                           .corner_bottom_left("╬");
-
-                if (i == 0)
-                    table[i][j].format()
-                               .corner_top_left("╦");
-                if (i == totalRowsCount - 1)
-                    table[i][j].format()
-                               .corner_bottom_left("╩");
-            }
-        }
-    }
+    tableSetter::format(&table, totalColsCount, totalRowsCount);
 
     return table;
 }

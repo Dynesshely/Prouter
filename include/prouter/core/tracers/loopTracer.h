@@ -7,6 +7,7 @@
 
 #include <prouter/core/pint.h>
 #include <prouter/utils/textBuilder.h>
+#include <prouter/utils/tableSetter.h>
 
 struct loopRow {
     int loopId{};
