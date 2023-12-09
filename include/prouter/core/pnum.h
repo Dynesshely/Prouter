@@ -45,6 +45,17 @@ public:
         return &varName;
     }
 
+    std::string history(const std::string &conj = " -> ") {
+        std::string text;
+        for (int k = 0; k < this->historicalValuesCount(); ++k) {
+            text += std::to_string((*this)[k]);
+
+            if (k < this->historicalValuesCount() - 1)
+                text += conj;
+        }
+        return text;
+    }
+
     T &operator[](int index) {
         if (index >= 0.0 && index < usedValues.size())
             return usedValues[index];

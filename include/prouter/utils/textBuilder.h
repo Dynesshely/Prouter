@@ -5,20 +5,6 @@
 class textBuilder {
 private:
 public:
-    static std::string varChangeHistoryText(pint *v);
-
-    template<typename T>
-    static std::string varChangeHistoryText(pnum<T> *v) {
-        std::string text;
-        for (int k = 0; k < v->historicalValuesCount(); ++k) {
-            text += std::to_string((*v)[k]);
-
-            if (k < v->historicalValuesCount() - 1)
-                text += " -> ";
-        }
-        return text;
-    }
-
     static std::string meetLength(std::string str, int len, char c);
 
     static std::string *meetLength(std::string *str, int len, char c);

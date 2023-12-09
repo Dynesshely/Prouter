@@ -36,7 +36,9 @@ public:
 
     loopTracer &named(std::string str);
 
-    loopTracer &tableText(std::ostream &stream);
+    tabulate::Table table();
+
+    loopTracer &print(std::ostream &stream);
 };
 
 #include "../../../../src/core/tracers/loopTracer.cpp"

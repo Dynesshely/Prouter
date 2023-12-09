@@ -1,14 +1,3 @@
-std::string textBuilder::varChangeHistoryText(pint *v) {
-    std::string text;
-    for (int k = 0; k < v->historicalValuesCount(); ++k) {
-        text += std::to_string((*v)[k]);
-
-        if (k < v->historicalValuesCount() - 1)
-            text += " -> ";
-    }
-    return text;
-}
-
 std::string textBuilder::meetLength(std::string str, int len, char c) {
     if (str.length() < len) {
         std::string rst;

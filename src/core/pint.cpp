@@ -32,6 +32,17 @@ std::string *pint::nameAddress() {
 //    return *this;
 //}
 
+std::string pint::history(const std::string &conj = " -> ") {
+    std::string text;
+    for (int k = 0; k < this->historicalValuesCount(); ++k) {
+        text += std::to_string((*this)[k]);
+
+        if (k < this->historicalValuesCount() - 1)
+            text += conj;
+    }
+    return text;
+}
+
 int &pint::operator[](int index) {
     if (index >= 0 && index < usedValues.size())
         return usedValues[index];
@@ -224,6 +235,7 @@ pint operator<<(const pint &lhs, const pint &rhs) {
 pint operator>>(const pint &lhs, const pint &rhs) {
     return {lhs >> rhs.getValue()};
 }
+
 
 // Below are out of `pint` class
 

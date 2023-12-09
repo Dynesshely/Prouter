@@ -7,9 +7,7 @@ void loopTracer::updateValue(int colIndex, int val) {
     colLength[colIndex] = std::max(
         colLength[colIndex],
         textBuilder::actualWidth(
-            textBuilder::varChangeHistoryText(
-                &(rows.back()->pints[colIndex])
-            )
+            rows.back()->pints[colIndex].history()
         )
     );
 }
@@ -63,7 +61,7 @@ loopTracer &loopTracer::named(std::string str) {
     return *this;
 }
 
-loopTracer &loopTracer::tableText(std::ostream &stream) {
+tabulate::Table loopTracer::table() {
     int totalRowsCount = (int) rows.size() + 1;
     int totalColsCount = (int) targets.size() + 1;
     tabulate::Table table;
@@ -78,7 +76,7 @@ loopTracer &loopTracer::tableText(std::ostream &stream) {
         tabulate::Table::Row_t row;
         row.emplace_back(std::to_string(i->loopId));
         for (auto &pint: i->pints)
-            row.emplace_back(textBuilder::varChangeHistoryText(&pint));
+            row.emplace_back(pint.history());
         table.add_row(row);
     }
 
@@ -119,8 +117,11 @@ loopTracer &loopTracer::tableText(std::ostream &stream) {
         }
     }
 
-    table.print(stream);
-    stream << std::endl;
+    return table;
+}
 
+loopTracer &loopTracer::print(std::ostream &stream) {
+    table().print(stream);
+    stream << std::endl;
     return *this;
 }

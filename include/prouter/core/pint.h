@@ -37,6 +37,8 @@ public:
 
 //    pint &traceBy(loopTracer *tracer);
 
+    std::string history(const std::string &conj);
+
     int &operator[](int index);
 
     int &operator[](const pint &index);

@@ -30,7 +30,7 @@ double a = 3.0;
 a = 4.0;
 a *= 2.0;
 
-std::cout << textBuilder::varChangeHistoryText(&a) << std::endl;
+std::cout << a.history() << std::endl;
 ```
 
 Output:
@@ -59,7 +59,7 @@ for (; i <= 10; ++i, tracer.loop()) {
     fc.setValue(f[i]);
 }
 
-tracer.end().tableText(std::cout);
+tracer.end().print(std::cout);
 ```
 
 Output:

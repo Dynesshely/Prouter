@@ -21,7 +21,7 @@ int main() {
         fc.setValue(f[i]);
     }
 
-    tracer.end().tableText(std::cout);
+    tracer.end().print(std::cout);
 
     std::cout << std::endl;
 
@@ -29,5 +29,5 @@ int main() {
     a = 4.0;
     a *= 2.0;
 
-    std::cout << textBuilder::varChangeHistoryText(&a) << std::endl;
+    std::cout << a.history() << std::endl;
 }
