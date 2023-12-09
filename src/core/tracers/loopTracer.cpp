@@ -85,7 +85,7 @@ tabulate::Table loopTracer::table() {
     return table;
 }
 
-loopTracer &loopTracer::print(std::ostream &stream) {
+loopTracer &loopTracer::printTo(std::ostream &stream) {
     table().print(stream);
     stream << std::endl;
     return *this;

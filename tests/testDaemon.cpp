@@ -21,7 +21,7 @@ int main() {
         fc.setValue(f[i]);
     }
 
-    tracer.end().print(std::cout);
+    tracer.end().printTo(std::cout);
 
     std::cout << std::endl;
 

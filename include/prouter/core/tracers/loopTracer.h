@@ -39,7 +39,7 @@ public:
 
     tabulate::Table table();
 
-    loopTracer &print(std::ostream &stream);
+    loopTracer &printTo(std::ostream &stream);
 };
 
 #include "../../../../src/core/tracers/loopTracer.cpp"

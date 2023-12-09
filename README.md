@@ -25,6 +25,7 @@ int main() {
 
 ```c++
 #include <prouter/prouterIncludes.h>
+#include <prouter/prouterPredefine.h>
 
 double a = 3.0;
 a = 4.0;
@@ -59,7 +60,7 @@ for (; i <= 10; ++i, tracer.loop()) {
     fc.setValue(f[i]);
 }
 
-tracer.end().print(std::cout);
+tracer.end().printTo(std::cout);
 ```
 
 Output:
