@@ -9,42 +9,14 @@ private:
     int length;
     std::vector<std::string> historicalValues;
 
-    void recordHistory() {
-        std::string text;
-        text += "[";
-        for (int i = 0; i < length; ++i) {
-            text += std::to_string(*(begin + i));
-            if (i < length - 1)
-                text += ", ";
-        }
-        text += "]";
-        historicalValues.push_back(text);
-    }
+    void recordHistory();
 
 public:
-    arrayTracer trace(pint *target, int len) {
-        begin = target, length = len;
-        for (int i = 0; i < length; ++i)
-            (begin + i)->onChanged(
-                [this](int val) {
-                    recordHistory();
-                }
-            );
-        return *this;
-    }
+    arrayTracer &trace(pint *target, int len);
 
-    arrayTracer dispose() {
-        for (int i = 0; i < length; ++i)
-            (begin + i)->onChanged(nullptr);
-        return *this;
-    }
+    arrayTracer &dispose();
 
-    std::string history() {
-        std::string text;
-        for (const auto &i: historicalValues)
-            text += i + "\n";
-        return text;
-    }
+    std::string history();
 };
 
 #include "../../../../src/core/tracers/arrayTracer.cpp"
