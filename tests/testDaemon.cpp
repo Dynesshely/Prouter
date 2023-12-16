@@ -9,31 +9,39 @@ int main() {
     std::cout << std::endl;
 
     double a = 3.0;
-    a = 4.0;
-    a *= 2.0;
+    a = 4.0, a *= 2.0;
 
-    std::cout << a.history() << std::endl;
+    std::cout << a.history() << std::endl << std::endl;
 
-    std::cout << std::endl;
 
-    auto arrTracer = prouter::traceArray();
+    auto int_arrTracer = prouter::traceArray().named("int arr tracer");
 
-    int arr[10] = {0};
+    int intarr[10] = {0};
 
-    arrTracer.trace(arr, 10);
+    int_arrTracer.trace(intarr, 10);
 
-    for (int i = 0; i < 10; ++i)
-        arr[i] = i;
+    for (int i = 0; i < 10; ++i) intarr[i] = i;
 
-    std::cout << arrTracer.history() << std::endl;
+    int_arrTracer.printTo(std::cout, true).dispose();
 
-    std::cout << std::endl;
+
+    auto num_arrTracer = prouter::traceArray().named("num arr tracer");
+
+    double numarr[10] = {0};
+
+    num_arrTracer.trace(numarr, 10);
+
+    for (int i = 0; i < 10; ++i) numarr[i] = i;
+
+    std::cout << num_arrTracer.history() << std::endl;
+
+    num_arrTracer.dispose(numarr);
+    
 
     auto loopTracer = prouter::traceLoop().named("loop 1");
 
     int f[1000], i = 1, fc;
-    f[1] = 1;
-    f[2] = 1;
+    f[1] = 1, f[2] = 1;
 
     loopTracer.trace(&i.named("i"))
               .trace(&fc.named("fc"));
@@ -45,6 +53,4 @@ int main() {
     }
 
     loopTracer.end().printTo(std::cout);
-
-    std::cout << std::endl;
 }

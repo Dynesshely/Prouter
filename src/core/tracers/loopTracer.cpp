@@ -34,7 +34,7 @@ loopTracer &loopTracer::trace(pint *v) {
             updateValue(currentCol, val);
         }
     );
-    return *this;
+    return static_cast<loopTracer &>(*this);
 }
 
 loopTracer &loopTracer::loop() {
@@ -44,7 +44,7 @@ loopTracer &loopTracer::loop() {
         row->pints.emplace_back(item.getValue());
     }
     rows.push_back(row);
-    return *this;
+    return static_cast<loopTracer &>(*this);
 }
 
 loopTracer &loopTracer::end() {
@@ -53,12 +53,12 @@ loopTracer &loopTracer::end() {
     for (auto &target: targets)
         target->onChanged(nullptr);
 
-    return *this;
+    return static_cast<loopTracer &>(*this);
 }
 
 loopTracer &loopTracer::named(std::string str) {
     tracerName = std::move(str);
-    return *this;
+    return static_cast<loopTracer &>(*this);
 }
 
 tabulate::Table loopTracer::table() {
@@ -88,5 +88,5 @@ tabulate::Table loopTracer::table() {
 loopTracer &loopTracer::printTo(std::ostream &stream) {
     table().print(stream);
     stream << std::endl;
-    return *this;
+    return static_cast<loopTracer &>(*this);
 }

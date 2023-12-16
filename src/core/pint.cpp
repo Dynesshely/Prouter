@@ -16,7 +16,7 @@ void pint::setValue(int val) {
 
 pint &pint::named(std::string str) {
     varName = std::move(str);
-    return *this;
+    return static_cast<pint &>(*this);
 }
 
 std::string pint::name() {
@@ -29,7 +29,7 @@ std::string *pint::nameAddress() {
 
 //pint &pint::traceBy(loopTracer *tracer) {
 //    tracer->trace(this);
-//    return *this;
+//    return static_cast<pint &>(*this);
 //}
 
 std::string pint::history(const std::string &conj = " -> ") {
@@ -61,12 +61,12 @@ int pint::historicalValuesCount() { return (int) usedValues.size(); }
 
 pint &pint::operator++(int) {
     setValue(value + 1);
-    return *this;
+    return static_cast<pint &>(*this);
 }
 
 pint &pint::operator--(int) {
     setValue(value - 1);
-    return *this;
+    return static_cast<pint &>(*this);
 }
 
 int pint::operator+(int val) const { return value + val; }
@@ -135,25 +135,25 @@ bool pint::operator!=(pint &val) const { return value != val.getValue(); }
 
 pint &pint::operator=(int &val) {
     setValue(val);
-    return *this;
+    return static_cast<pint &>(*this);
 }
 
 pint &pint::operator=(const int &val) {
     setValue(val);
-    return *this;
+    return static_cast<pint &>(*this);
 }
 
 pint &pint::operator=(const pint &other) {
     if (this != &other)
         setValue(other.getValue());
-    return *this;
+    return static_cast<pint &>(*this);
 }
 
 pint::operator int() const { return getValue(); }
 
 pint &pint::onChanged(std::function<void(int)> func) {
     onChangedFunc = std::move(func);
-    return *this;
+    return static_cast<pint &>(*this);
 }
 
 int operator+(int lhs, const pint &rhs) {

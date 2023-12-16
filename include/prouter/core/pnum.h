@@ -34,7 +34,7 @@ public:
 
     pnum &named(std::string str) {
         varName = std::move(str);
-        return *this;
+        return static_cast<pnum &>(*this);
     }
 
     std::string name() {
@@ -74,12 +74,12 @@ public:
 
     pnum &operator++(int) {
         setValue(value + 1);
-        return *this;
+        return static_cast<pnum &>(*this);
     }
 
     pnum &operator--(int) {
         setValue(value - 1);
-        return *this;
+        return static_cast<pnum &>(*this);
     }
 
     T operator+(T val) const { return value + val; }
