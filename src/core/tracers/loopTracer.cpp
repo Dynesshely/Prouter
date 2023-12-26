@@ -37,6 +37,23 @@ loopTracer &loopTracer::trace(pint *v) {
     return static_cast<loopTracer &>(*this);
 }
 
+loopTracer &loopTracer::trace(pint *target, int len) {
+    auto *tracer = new arrayTracer();
+    tracer->trace(target, len);
+    arrays.push_back(tracer);
+    ++arrColCount;
+    return static_cast<loopTracer &>(*this);
+}
+
+template<typename T>
+loopTracer &loopTracer::trace(pnum<T> *target, int len) {
+    auto tracer = new arrayTracer();
+    tracer->trace(target, len);
+    arrays.push_back(tracer);
+    ++arrColCount;
+    return static_cast<loopTracer &>(*this);
+}
+
 loopTracer &loopTracer::loop() {
     auto row = new loopRow();
     row->loopId = (int) rows.size();
@@ -63,20 +80,24 @@ loopTracer &loopTracer::named(std::string str) {
 
 tabulate::Table loopTracer::table() {
     int totalRowsCount = (int) rows.size() + 1;
-    int totalColsCount = (int) targets.size() + 1;
+    int totalColsCount = (int) targets.size() + arrColCount + 1;
     tabulate::Table table;
 
     tabulate::Table::Row_t header;
     header.emplace_back("");
     for (auto &target: targets)
         header.emplace_back(target->name());
+    for (auto &arr: arrays)
+        header.emplace_back(arr->name());
     table.add_row(header);
 
-    for (auto &i: rows) {
+    for (int i = 0; i < rows.size(); ++i) {
         tabulate::Table::Row_t row;
-        row.emplace_back(std::to_string(i->loopId));
-        for (auto &pint: i->pints)
+        row.emplace_back(std::to_string(rows[i]->loopId));
+        for (auto &pint: rows[i]->pints)
             row.emplace_back(pint.history());
+        for (auto &arr: arrays)
+            row.emplace_back(arr->history(i - 2));
         table.add_row(row);
     }
 

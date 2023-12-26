@@ -1,4 +1,6 @@
 void arrayTracer::recordHistory() {
+    if (pint_begin == nullptr) return;
+
     std::string text;
     text += "[";
     for (int i = 0; i < pint_length; ++i) {
@@ -12,6 +14,8 @@ void arrayTracer::recordHistory() {
 
 template<typename T>
 void arrayTracer::recordHistory(pnum<T> *target) {
+    if (target == nullptr) return;
+
     std::string text;
     text += "[";
     for (int i = 0; i < pnum_length; ++i) {
@@ -21,6 +25,10 @@ void arrayTracer::recordHistory(pnum<T> *target) {
     }
     text += "]";
     historicalValues.push_back(text);
+}
+
+std::string arrayTracer::name() {
+    return tracerName;
 }
 
 arrayTracer &arrayTracer::named(std::string str) {
@@ -101,4 +109,14 @@ std::string arrayTracer::history() {
     for (auto &i: historicalValues)
         text += i + "\n";
     return text;
+}
+
+std::string arrayTracer::history(int index) {
+    return historicalValues[index];
+}
+
+arrayTracer &arrayTracer::manuallyRecord() {
+    recordHistory();
+
+    return static_cast<arrayTracer &>(*this);
 }

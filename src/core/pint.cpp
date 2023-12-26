@@ -4,7 +4,7 @@ pint::pint(int val) : value(val) { setValue(val); }
 
 int *pint::address() { return &value; }
 
-[[nodiscard]] int pint::getValue() const { return value; }
+int pint::getValue() const { return value; }
 
 void pint::setValue(int val) {
     value = val;
@@ -59,12 +59,12 @@ int &pint::operator[](const pint &index) {
 
 int pint::historicalValuesCount() { return (int) usedValues.size(); }
 
-pint &pint::operator++(int) {
+const pint pint::operator++(int) {
     setValue(value + 1);
     return static_cast<pint &>(*this);
 }
 
-pint &pint::operator--(int) {
+const pint pint::operator--(int) {
     setValue(value - 1);
     return static_cast<pint &>(*this);
 }
@@ -135,18 +135,18 @@ bool pint::operator!=(pint &val) const { return value != val.getValue(); }
 
 pint &pint::operator=(int &val) {
     setValue(val);
-    return static_cast<pint &>(*this);
+    return *this;
 }
 
 pint &pint::operator=(const int &val) {
     setValue(val);
-    return static_cast<pint &>(*this);
+    return *this;
 }
 
 pint &pint::operator=(const pint &other) {
     if (this != &other)
         setValue(other.getValue());
-    return static_cast<pint &>(*this);
+    return *this;
 }
 
 pint::operator int() const { return getValue(); }

@@ -6,8 +6,9 @@
 #include <tabulate/table.hpp>
 
 #include <prouter/core/pint.h>
-#include <prouter/utils/textBuilder.h>
 #include <prouter/utils/tableSetter.h>
+#include <prouter/core/tracers/arrayTracer.h>
+#include <prouter/utils/textBuilder.h>
 
 struct loopRow {
     int loopId{};
@@ -17,10 +18,12 @@ struct loopRow {
 class loopTracer {
 private:
     int colCount = 0;
+    int arrColCount = 0;
 
     std::vector<pint *> targets;
     std::vector<loopRow *> rows;
     std::vector<int> colLength;
+    std::vector<arrayTracer *> arrays;
 
     std::string tracerName;
 
@@ -31,6 +34,11 @@ public:
 
     loopTracer &trace(pint *v);
 
+    loopTracer &trace(pint *target, int len);
+
+    template<typename T>
+    loopTracer &trace(pnum<T> *target, int len);
+
     loopTracer &loop();
 
     loopTracer &end();
@@ -40,6 +48,12 @@ public:
     tabulate::Table table();
 
     loopTracer &printTo(std::ostream &stream);
+
+    ~loopTracer() {
+        for (auto &array: arrays) {
+            array->dispose();
+        }
+    }
 };
 
 #include "../../../../src/core/tracers/loopTracer.cpp"

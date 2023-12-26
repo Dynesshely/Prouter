@@ -7,11 +7,11 @@
 
 class arrayTracer {
 private:
-    pint *pint_begin;
-    int pint_length, pnum_length;
+    pint *pint_begin = nullptr;
+    int pint_length = 0, pnum_length = 0;
     bool typeSelected = false;
     std::vector<std::string> historicalValues;
-    std::string tracerName;
+    std::string tracerName = "default array tracer";
 
     void recordHistory();
 
@@ -19,6 +19,8 @@ private:
     void recordHistory(pnum<T> *target);
 
 public:
+    std::string name();
+
     arrayTracer &named(std::string str);
 
     arrayTracer &trace(pint *target, int len);
@@ -36,6 +38,10 @@ public:
     arrayTracer &printTo(std::ostream &stream, bool useTable = false);
 
     std::string history();
+
+    std::string history(int index);
+
+    arrayTracer &manuallyRecord();
 };
 
 #include "../../../../src/core/tracers/arrayTracer.cpp"

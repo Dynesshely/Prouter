@@ -36,15 +36,16 @@ int main() {
     std::cout << num_arrTracer.history() << std::endl;
 
     num_arrTracer.dispose(numarr);
-    
+
 
     auto loopTracer = prouter::traceLoop().named("loop 1");
 
-    int f[1000], i = 1, fc;
+    int f[13], i = 1, fc;
     f[1] = 1, f[2] = 1;
 
     loopTracer.trace(&i.named("i"))
-              .trace(&fc.named("fc"));
+              .trace(&fc.named("fc"))
+              .trace(f, 13);
 
     for (; i <= 10; ++i, loopTracer.loop()) {
         if (i >= 3)

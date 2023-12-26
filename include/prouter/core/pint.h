@@ -47,9 +47,9 @@ public:
 
     pint &onChanged(std::function<void(int)> func);
 
-    pint &operator++(int);
+    const pint operator++(int);
 
-    pint &operator--(int);
+    const pint operator--(int);
 
     int operator+(int val) const;
 
