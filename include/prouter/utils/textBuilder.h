@@ -16,6 +16,8 @@ public:
     static int actualWidth(const std::string &str);
 
     static int actualSize(size_t s);
+
+    static std::vector<std::string> splitByLines(const std::string& str);
 };
 
 #include "../../../src/utils/textBuilder.cpp"

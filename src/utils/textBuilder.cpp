@@ -38,3 +38,15 @@ int textBuilder::actualWidth(const std::string &str) {
 int textBuilder::actualSize(size_t s) {
     return (int) s;
 }
+
+std::vector<std::string> textBuilder::splitByLines(const std::string& str) {
+    std::vector<std::string> lines;
+    std::istringstream inputStream(str);
+
+    std::string line;
+    while (std::getline(inputStream, line)) {
+        lines.push_back(line);
+    }
+
+    return lines;
+}

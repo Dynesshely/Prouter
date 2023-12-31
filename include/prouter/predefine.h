@@ -1,3 +1,7 @@
 #define int pint
-#define double pnum<double>
+#define short pnum<short>
+
 #define float pnum<float>
+#define double pnum<double>
+
+#define stack pstack

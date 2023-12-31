@@ -54,4 +54,18 @@ int main() {
     }
 
     loopTracer.end().printTo(std::cout);
+
+    stack<s_int> pstackTest;
+    pstackTest.push(4)
+              .push(8)
+              .push(2)
+              .pop()
+              .push(9)
+              .pop()
+              .push(3)
+              .pop()
+              .push(1)
+              .pop()
+              .clear()
+              .printHistoryTo(std::cout);
 }
