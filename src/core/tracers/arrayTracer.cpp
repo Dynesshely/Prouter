@@ -27,6 +27,17 @@ void arrayTracer::recordHistory(pnum<T> *target) {
     historicalValues.push_back(text);
 }
 
+template<typename T>
+void arrayTracer::recordOriginalValue(pnum<T> *target_pnum) {
+    if (target_pnum == nullptr) {
+        recordHistory();
+    } else {
+        recordHistory(target_pnum);
+    }
+    originalValue = historicalValues.front();
+    historicalValues.pop_back();
+}
+
 std::string arrayTracer::name() {
     return tracerName;
 }
@@ -42,12 +53,17 @@ arrayTracer &arrayTracer::trace(pint *target, int len) {
     else typeSelected = true;
 
     pint_begin = target, pint_length = len;
-    for (int i = 0; i < pint_length; ++i)
+
+    recordOriginalValue<int>(nullptr);
+
+    for (int i = 0; i < pint_length; ++i) {
         (pint_begin + i)->onChanged(
             [this](int val) {
                 recordHistory();
             }
         );
+    }
+
     return static_cast<arrayTracer &>(*this);
 }
 
@@ -58,12 +74,17 @@ arrayTracer &arrayTracer::trace(pnum<T> *target, int len) {
     else typeSelected = true;
 
     pnum_length = len;
-    for (int i = 0; i < pnum_length; ++i)
+
+    recordOriginalValue(target);
+
+    for (int i = 0; i < pnum_length; ++i) {
         (target + i)->onChanged(
             [this, target](T val) {
                 recordHistory(target);
             }
         );
+    }
+
     return static_cast<arrayTracer &>(*this);
 }
 
@@ -112,11 +133,18 @@ std::string arrayTracer::history() {
 }
 
 std::string arrayTracer::history(int index) {
-    return historicalValues[index];
+    int i = index - loop_offset;
+
+    if (i < 0)
+        return originalValue;
+    else if (i >= historicalValues.size())
+        return historicalValues.back();
+    else
+        return historicalValues[i];
 }
 
-arrayTracer &arrayTracer::manuallyRecord() {
-    recordHistory();
+arrayTracer &arrayTracer::offset(int offset) {
+    loop_offset = offset;
 
     return static_cast<arrayTracer &>(*this);
 }

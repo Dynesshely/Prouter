@@ -34,10 +34,10 @@ public:
 
     loopTracer &trace(pint *v);
 
-    loopTracer &trace(pint *target, int len);
+    loopTracer &trace(pint *target, int len, int offset = 0);
 
     template<typename T>
-    loopTracer &trace(pnum<T> *target, int len);
+    loopTracer &trace(pnum<T> *target, int len, int offset = 0);
 
     loopTracer &loop();
 

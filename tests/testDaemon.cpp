@@ -45,7 +45,7 @@ int main() {
 
     loopTracer.trace(&i.named("i"))
               .trace(&fc.named("fc"))
-              .trace(f, 13);
+              .trace(f, 13, 2);
 
     for (; i <= 10; ++i, loopTracer.loop()) {
         if (i >= 3)

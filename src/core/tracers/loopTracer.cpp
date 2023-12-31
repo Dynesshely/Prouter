@@ -37,18 +37,18 @@ loopTracer &loopTracer::trace(pint *v) {
     return static_cast<loopTracer &>(*this);
 }
 
-loopTracer &loopTracer::trace(pint *target, int len) {
+loopTracer &loopTracer::trace(pint *target, int len, int offset) {
     auto *tracer = new arrayTracer();
-    tracer->trace(target, len);
+    tracer->trace(target, len).offset(offset);
     arrays.push_back(tracer);
     ++arrColCount;
     return static_cast<loopTracer &>(*this);
 }
 
 template<typename T>
-loopTracer &loopTracer::trace(pnum<T> *target, int len) {
+loopTracer &loopTracer::trace(pnum<T> *target, int len, int offset) {
     auto tracer = new arrayTracer();
-    tracer->trace(target, len);
+    tracer->trace(target, len).offset(offset);
     arrays.push_back(tracer);
     ++arrColCount;
     return static_cast<loopTracer &>(*this);
@@ -97,7 +97,7 @@ tabulate::Table loopTracer::table() {
         for (auto &pint: rows[i]->pints)
             row.emplace_back(pint.history());
         for (auto &arr: arrays)
-            row.emplace_back(arr->history(i - 2));
+            row.emplace_back(arr->history(i));
         table.add_row(row);
     }
 

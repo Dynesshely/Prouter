@@ -8,15 +8,19 @@
 class arrayTracer {
 private:
     pint *pint_begin = nullptr;
-    int pint_length = 0, pnum_length = 0;
+    int pint_length = 0, pnum_length = 0, loop_offset = 0;
     bool typeSelected = false;
     std::vector<std::string> historicalValues;
     std::string tracerName = "default array tracer";
+    std::string originalValue = "";
 
     void recordHistory();
 
     template<typename T>
     void recordHistory(pnum<T> *target);
+
+    template<typename T>
+    void recordOriginalValue(pnum<T> *target_pnum);
 
 public:
     std::string name();
@@ -41,7 +45,7 @@ public:
 
     std::string history(int index);
 
-    arrayTracer &manuallyRecord();
+    arrayTracer &offset(int offset);
 };
 
 #include "../../../../src/core/tracers/arrayTracer.cpp"
