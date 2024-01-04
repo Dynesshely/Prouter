@@ -5,3 +5,5 @@
 #define double pnum<double>
 
 #define stack pstack
+#define queue pqueue
+

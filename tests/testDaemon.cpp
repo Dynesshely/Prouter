@@ -55,17 +55,30 @@ int main() {
 
     loopTracer.end().printTo(std::cout);
 
-    stack<s_int> pstackTest;
-    pstackTest.push(4)
-              .push(8)
-              .push(2)
-              .pop()
-              .push(9)
-              .pop()
-              .push(3)
-              .pop()
-              .push(1)
-              .pop()
-              .clear()
-              .printHistoryTo(std::cout);
+    auto pstackTest = (new stack<s_int>())->push(4)
+                                          .push(8)
+                                          .push(2)
+                                          .pop()
+                                          .push(9)
+                                          .pop()
+                                          .push(3)
+                                          .pop()
+                                          .push(1)
+                                          .pop()
+                                          .clear()
+                                          .printHistoryTo(std::cout);
+
+    auto pqueueTest = (new queue<int>())->push(3)
+                                        .push(7)
+                                        .pop()
+                                        .push(16)
+                                        .pop()
+                                        .push(12)
+                                        .push(244)
+                                        .push(9)
+                                        .pop()
+                                        .pop()
+                                        .clear()
+                                        .printHistoryTo(std::cout);
+
 }

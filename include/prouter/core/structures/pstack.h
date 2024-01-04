@@ -17,14 +17,10 @@ private:
     void recordHistory() {
         tabulate::Table table;
 
-//        table.add_row({""});
-
         for (int i = 0; i < internalStack.size(); ++i)
             table.add_row({std::to_string(internalStack[i])});
 
         table.add_row({" "});
-
-//        tableSetter::format(&table, 1, internalStack.size());
 
         historicalValues.push_back(table);
     }

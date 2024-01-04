@@ -5,3 +5,4 @@
 #undef double
 
 #undef stack
+#undef queue
