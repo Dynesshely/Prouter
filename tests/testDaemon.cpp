@@ -81,4 +81,8 @@ int main() {
                                         .clear()
                                         .printHistoryTo(std::cout);
 
+    auto lcs = (new alg_lcs())->setValue(
+        "ABCBDAB",
+        "BDCABA"
+    ).run().printLcsTo(std::cout);
 }

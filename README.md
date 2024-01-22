@@ -240,3 +240,21 @@ Output:
   10     | <- | <empty queue> | <- |   
          +----+---------------+----+
 ```
+
+## Trace Algorithms
+
+### LCS (Longest Common Sequence)
+
+```c++
+auto lcs = (new alg_lcs())->setValue(
+    "ABCBDAB",
+    "BDCABA"
+).run().printLcsTo(std::cout);
+```
+
+Output:
+
+```text
+len: 4	lcs: BDAB
+len: 4	lcs: BCBA
+```
