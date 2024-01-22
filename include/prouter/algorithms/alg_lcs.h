@@ -1,6 +1,10 @@
 #pragma once
 
 #include <utility>
+#include <map>
+#include <algorithm>
+
+#include <tabulate/tabulate.hpp>
 
 class alg_lcs {
 private:
@@ -27,7 +31,7 @@ public:
 
     alg_lcs &run();
 
-    alg_lcs &printLcsTo(std::ostream &stream);
+    alg_lcs &printLcsTo(std::ostream &stream, bool withMatrices = false);
 
     std::vector<std::string> getResults();
 

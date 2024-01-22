@@ -68,14 +68,54 @@ alg_lcs &alg_lcs::run() {
     return static_cast<alg_lcs &>(*this);
 }
 
-alg_lcs &alg_lcs::printLcsTo(std::ostream &stream) {
+alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
+    std::map<std::string, int> m;
+    for (const auto &result: results)
+        if (result.length() == results[0].length())
+            m[result] = 1;
+    results.clear();
+    for (auto &p: m)
+        if (p.second == 1) results.push_back(p.first);
+
+    tabulate::Table table, container;
+
+    tabulate::Table::Row_t header;
+    header.emplace_back("-");
+    header.emplace_back("-");
+    for (char j: *b)
+        header.emplace_back(std::string{j});
+    table.add_row(header);
+
+    for (int i = 0; i <= h; ++i) {
+        tabulate::Table::Row_t line;
+
+        if (i == 0)
+            line.emplace_back("-");
+        else line.emplace_back(std::string{(*a)[i - 1]});
+
+        for (int j = 0; j <= w; ++j)
+            line.emplace_back(std::to_string(calMatrix[i][j]));
+
+        table.add_row(line);
+    }
+
+    table.format().hide_border();
+
+    container.add_row({"Longest Common Sequence"});
+    container.add_row({table});
+    container.add_row({"len: " + std::to_string(results[0].length())});
+
     for (const auto &s: results)
-        if (s.length() == results[0].length())
-            stream << "len: " << results[0].length() << "\tlcs: " << s << std::endl;
+        container.add_row({"lcs: " + s});
+
+    container.row(0).format().font_align(tabulate::FontAlign::center);
+    container.row(1).format().font_align(tabulate::FontAlign::center);
+
+    container.print(stream);
 
     return static_cast<alg_lcs &>(*this);
 }
 
 std::vector<std::string> alg_lcs::getResults() { return results; }
 
-int alg_lcs::getLcsLength() { return results[0].length(); }
+int alg_lcs::getLcsLength() { return (int) (results[0].length()); }
