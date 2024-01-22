@@ -36,6 +36,8 @@ public:
     std::vector<std::string> getResults();
 
     int getLcsLength();
+
+    ~alg_lcs();
 };
 
 #include "../../../src/algorithms/alg_lcs.cpp"

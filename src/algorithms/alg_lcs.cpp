@@ -65,10 +65,6 @@ alg_lcs &alg_lcs::run() {
     for (int j = w; j >= 1; --j)
         trace(w - j, h, w - (w - j));
 
-    return static_cast<alg_lcs &>(*this);
-}
-
-alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
     std::map<std::string, int> m;
     for (const auto &result: results)
         if (result.length() == results[0].length())
@@ -77,6 +73,10 @@ alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
     for (auto &p: m)
         if (p.second == 1) results.push_back(p.first);
 
+    return static_cast<alg_lcs &>(*this);
+}
+
+alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
     tabulate::Table table, container;
 
     tabulate::Table::Row_t header;
@@ -119,3 +119,9 @@ alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
 std::vector<std::string> alg_lcs::getResults() { return results; }
 
 int alg_lcs::getLcsLength() { return (int) (results[0].length()); }
+
+alg_lcs::~alg_lcs() {
+    for (int i = 0; i <= h; ++i)
+        delete[] calMatrix[i], dirMatrix[i];
+    delete[] calMatrix, dirMatrix;
+}
