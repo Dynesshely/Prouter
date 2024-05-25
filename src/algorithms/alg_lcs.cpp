@@ -44,19 +44,32 @@ alg_lcs &alg_lcs::setValue(std::string sa, std::string sb) {
     return static_cast<alg_lcs &>(*this);
 }
 
-alg_lcs &alg_lcs::run() {
+alg_lcs &alg_lcs::run(const bool useStepper, std::ostream &stream) {
+    auto stepper = pstepper(useStepper);
+
     for (auto i = 1; i <= h; ++i)
         for (auto j = 1; j <= w; ++j) {
             auto same = (*a)[i - 1] == (*b)[j - 1];
             calMatrix[i][j] = (
-                same ? calMatrix[i - 1][j - 1] + 1 :
-                std::max(
-                    calMatrix[i][j - 1], calMatrix[i - 1][j]
-                )
+                same
+                    ? calMatrix[i - 1][j - 1] + 1
+                    : std::max(
+                        calMatrix[i][j - 1], calMatrix[i - 1][j]
+                    )
             );
-            dirMatrix[i][j] = same ? 1 : (
-                calMatrix[i - 1][j] >= calMatrix[i][j - 1] ? 2 : 3
-            );
+            if (useStepper) {
+                stepper.wait();
+                printLcsTo(stream);
+            }
+            dirMatrix[i][j] = same
+                                  ? 1
+                                  : (
+                                      calMatrix[i - 1][j] >= calMatrix[i][j - 1] ? 2 : 3
+                                  );
+            if (useStepper) {
+                stepper.wait();
+                printLcsTo(stream);
+            }
         }
 
     for (auto i = 0; i < w; ++i)

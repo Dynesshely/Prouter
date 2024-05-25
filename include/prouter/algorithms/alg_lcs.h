@@ -29,7 +29,7 @@ private:
 public:
     alg_lcs &setValue(std::string a, std::string b);
 
-    alg_lcs &run();
+    alg_lcs &run(bool useStepper = false, std::ostream &stream = std::cout);
 
     alg_lcs &printLcsTo(std::ostream &stream, bool withMatrices = false);
 
