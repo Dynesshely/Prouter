@@ -4,6 +4,8 @@
 #include <map>
 #include <algorithm>
 
+#include <prouter/utils/consoleUtils.h>
+
 #include <tabulate/tabulate.hpp>
 
 class alg_lcs {
@@ -20,7 +22,7 @@ private:
     // Width and height
     int w, h;
 
-    bool traced = false;
+    bool traced = false, finished = false, stepperUsed = false;
 
     void init();
 

@@ -45,6 +45,8 @@ alg_lcs &alg_lcs::setValue(std::string sa, std::string sb) {
 }
 
 alg_lcs &alg_lcs::run(const bool useStepper, std::ostream &stream) {
+    stepperUsed = useStepper;
+
     auto stepper = pstepper(useStepper);
 
     for (auto i = 1; i <= h; ++i)
@@ -52,23 +54,20 @@ alg_lcs &alg_lcs::run(const bool useStepper, std::ostream &stream) {
             auto same = (*a)[i - 1] == (*b)[j - 1];
             calMatrix[i][j] = (
                 same
-                    ? calMatrix[i - 1][j - 1] + 1
-                    : std::max(
-                        calMatrix[i][j - 1], calMatrix[i - 1][j]
-                    )
+                ? calMatrix[i - 1][j - 1] + 1
+                : std::max(
+                    calMatrix[i][j - 1], calMatrix[i - 1][j]
+                )
             );
-            if (useStepper) {
-                stepper.wait();
-                printLcsTo(stream);
-            }
             dirMatrix[i][j] = same
-                                  ? 1
-                                  : (
-                                      calMatrix[i - 1][j] >= calMatrix[i][j - 1] ? 2 : 3
-                                  );
+                              ? 1
+                              : (
+                                  calMatrix[i - 1][j] >= calMatrix[i][j - 1] ? 2 : 3
+                              );
             if (useStepper) {
-                stepper.wait();
                 printLcsTo(stream);
+                stepper.wait();
+                consoleUtils::eraseLines(4 + 2 + 1 + h, stream);
             }
         }
 
@@ -85,6 +84,8 @@ alg_lcs &alg_lcs::run(const bool useStepper, std::ostream &stream) {
     results.clear();
     for (auto &p: m)
         if (p.second == 1) results.push_back(p.first);
+
+    finished = true;
 
     return static_cast<alg_lcs &>(*this);
 }
@@ -116,15 +117,24 @@ alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
 
     container.add_row({"Longest Common Sequence"});
     container.add_row({table});
-    container.add_row({"len: " + std::to_string(results[0].length())});
 
-    for (const auto &s: results)
-        container.add_row({"lcs: " + s});
+    if (finished)
+        container.add_row({"len: " + std::to_string(results[0].length())});
+
+    if (finished)
+        for (const auto &s: results)
+            container.add_row({"lcs: " + s});
 
     container.row(0).format().font_align(tabulate::FontAlign::center);
     container.row(1).format().font_align(tabulate::FontAlign::center);
 
+    if (stepperUsed && finished)
+        stream << std::endl;
+
     container.print(stream);
+
+    if (finished)
+        stream << std::endl;
 
     return static_cast<alg_lcs &>(*this);
 }
