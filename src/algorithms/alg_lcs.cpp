@@ -128,9 +128,6 @@ alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
     container.row(0).format().font_align(tabulate::FontAlign::center);
     container.row(1).format().font_align(tabulate::FontAlign::center);
 
-    if (stepperUsed && finished)
-        stream << std::endl;
-
     container.print(stream);
 
     if (finished)
