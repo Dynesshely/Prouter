@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef PROUTER_ALG_LCS_H
+#define PROUTER_ALG_LCS_H
+
 #include <utility>
 #include <map>
 #include <algorithm>
@@ -42,4 +45,4 @@ public:
     ~alg_lcs();
 };
 
-#include "../../../src/algorithms/alg_lcs.cpp"
+#endif

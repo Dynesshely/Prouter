@@ -1,3 +1,15 @@
+## CMake files
+build/
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+CMakeOutput.log
+CMakeError.log
+CMakeScripts/
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+
+
 ## Custom ignores
 .idea/
 

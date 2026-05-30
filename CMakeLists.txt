@@ -1,20 +1,30 @@
-cmake_minimum_required(VERSION 3.26)
-project(Prouter)
+cmake_minimum_required(VERSION 3.10.0)
+project(Prouter VERSION 0.1.0 LANGUAGES C CXX)
 
+### Project Info
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+
+### Environment Info
 set(CMAKE_CXX_STANDARD 20)
-#SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2")
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -Wall -O2")
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -save-temps=obj")
+### Project Structure
+add_library(Prouter Prouter.cpp)
 
-add_subdirectory(include)
-#add_subdirectory(src)
+add_subdirectory(${PROJECT_SOURCE_DIR}/include)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(
+    ${PROJECT_SOURCE_DIR}/include
+    ### Libraries
+    ${PROJECT_SOURCE_DIR}/lib/tabulate/include
+)
 
-# Libraries
-include_directories(${PROJECT_SOURCE_DIR}/lib/tabulate/include)
+### CTest
+add_subdirectory(tests)
 
-add_executable(testDaemon tests/testDaemon.cpp)
-
+include(CTest)
 enable_testing()
+add_test(NAME mytest COMMAND tests)
+
+### CPack
+include(CPack)

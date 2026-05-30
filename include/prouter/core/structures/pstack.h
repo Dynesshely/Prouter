@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef PROUTER_CORE_STRUCTURES_PSTACK_H
+#define PROUTER_CORE_STRUCTURES_PSTACK_H
+
 #include <stack>
 
 #include <tabulate/table.hpp>
@@ -138,3 +141,5 @@ public:
 };
 
 #include "../../../../src/core/structures/pstack.cpp"
+
+#endif

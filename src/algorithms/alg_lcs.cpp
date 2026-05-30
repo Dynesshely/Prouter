@@ -1,3 +1,5 @@
+#include <prouter/algorithms/alg_lcs.h>
+
 void alg_lcs::init() {
     if (str_a.length() > str_b.length())
         a = &str_b, b = &str_a;

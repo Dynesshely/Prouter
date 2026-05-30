@@ -1,110 +1,111 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
+#ifndef PROUTER_CORE_STRUCTURES_PQUEUE_H
+#define PROUTER_CORE_STRUCTURES_PQUEUE_H
+
 #include <algorithm>
+#include <iostream>
 #include <stdexcept>
+#include <vector>
+
 
 #include <tabulate/table.hpp>
 
-template<typename T>
-class pqueue {
+template <typename T> class pqueue {
 private:
-    std::vector<T> vec;
-    std::vector<tabulate::Table> historicalValues;
-    int start_index, end_index;
+  std::vector<T> vec;
+  std::vector<tabulate::Table> historicalValues;
+  int start_index, end_index;
 
-    void recordHistory() {
-        tabulate::Table table;
+  void recordHistory() {
+    tabulate::Table table;
 
-        tabulate::Table::Row_t header;
-        header.emplace_back("<-");
-        for (int i = start_index; i <= end_index; ++i)
-            header.emplace_back(std::to_string(vec[i]));
-        if (empty())
-            header.emplace_back("<empty queue>");
-        header.emplace_back("<-");
+    tabulate::Table::Row_t header;
+    header.emplace_back("<-");
+    for (int i = start_index; i <= end_index; ++i)
+      header.emplace_back(std::to_string(vec[i]));
+    if (empty())
+      header.emplace_back("<empty queue>");
+    header.emplace_back("<-");
 
-        table.add_row(header);
+    table.add_row(header);
 
-        historicalValues.emplace_back(table);
+    historicalValues.emplace_back(table);
+  }
+
+  std::string getFullHistory() {
+    tabulate::Table table;
+
+    for (int i = 0; i < historicalValues.size(); ++i) {
+      auto id = tabulate::Table()
+                    .add_row({" "})
+                    .add_row({std::to_string(i)})
+                    .add_row({" "});
+      id.format().font_align(tabulate::FontAlign::center).hide_border();
+      table.add_row({id, historicalValues[i]});
     }
 
-    std::string getFullHistory() {
-        tabulate::Table table;
+    table.format().font_align(tabulate::FontAlign::center).hide_border();
 
-        for (int i = 0; i < historicalValues.size(); ++i) {
-            auto id = tabulate::Table()
-                .add_row({" "})
-                .add_row({std::to_string(i)})
-                .add_row({" "});
-            id.format().font_align(tabulate::FontAlign::center).hide_border();
-            table.add_row({id, historicalValues[i]});
-        }
-
-        table.format().font_align(tabulate::FontAlign::center).hide_border();
-
-        return table.str();
-    }
+    return table.str();
+  }
 
 public:
-    pqueue() : start_index(0), end_index(-1) {}
+  pqueue() : start_index(0), end_index(-1) {}
 
-    bool empty() const {
-        return start_index > end_index;
+  bool empty() const { return start_index > end_index; }
+
+  size_t size() const { return end_index - start_index + 1; }
+
+  const T &front() const {
+    if (empty()) {
+      throw std::out_of_range("Queue is empty");
+    }
+    return vec[start_index];
+  }
+
+  const T &back() const {
+    if (empty()) {
+      throw std::out_of_range("Queue is empty");
+    }
+    return vec[end_index];
+  }
+
+  pqueue &push(const T &value) {
+    vec.push_back(value);
+    ++end_index;
+
+    recordHistory();
+
+    return static_cast<pqueue &>(*this);
+  }
+
+  pqueue &pop() {
+    if (empty()) {
+      throw std::out_of_range("Queue is empty");
+    }
+    ++start_index;
+
+    recordHistory();
+
+    return static_cast<pqueue &>(*this);
+  }
+
+  pqueue &clear() {
+    if (!empty()) {
+      start_index = end_index + 1;
+      recordHistory();
     }
 
-    size_t size() const {
-        return end_index - start_index + 1;
-    }
+    return static_cast<pqueue &>(*this);
+  }
 
-    const T &front() const {
-        if (empty()) {
-            throw std::out_of_range("Queue is empty");
-        }
-        return vec[start_index];
-    }
-
-    const T &back() const {
-        if (empty()) {
-            throw std::out_of_range("Queue is empty");
-        }
-        return vec[end_index];
-    }
-
-    pqueue &push(const T &value) {
-        vec.push_back(value);
-        ++end_index;
-
-        recordHistory();
-
-        return static_cast<pqueue &>(*this);
-    }
-
-    pqueue &pop() {
-        if (empty()) {
-            throw std::out_of_range("Queue is empty");
-        }
-        ++start_index;
-
-        recordHistory();
-
-        return static_cast<pqueue &>(*this);
-    }
-
-    pqueue &clear() {
-        if (!empty()) {
-            start_index = end_index + 1;
-            recordHistory();
-        }
-
-        return static_cast<pqueue &>(*this);
-    }
-
-    pqueue &printHistoryTo(std::ostream &stream) {
-        stream << getFullHistory() << std::endl;
-        return static_cast<pqueue &>(*this);
-    }
+  pqueue &printHistoryTo(std::ostream &stream) {
+    stream << getFullHistory() << std::endl;
+    return static_cast<pqueue &>(*this);
+  }
 };
 
 #include "../../../../src/core/structures/pqueue.cpp"
+
+#endif
