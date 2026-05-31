@@ -13,7 +13,7 @@ Prouter is a library that allows you to trace your code and visualize your algor
 ## Clone & Init
 
 ```bash
-git clone <repo-url> Prouter
+git clone git@github.com:Dynesshely/Prouter.git
 cd Prouter
 git submodule update --init --recursive
 ```
