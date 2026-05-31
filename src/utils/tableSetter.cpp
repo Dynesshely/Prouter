@@ -1,10 +1,12 @@
+#include <prouter/utils/tableSetter.h>
+
 // Default:
 // ╔═══╦═══════╗
 // ╠═══╣       ║
 // ╠═══╬═══╦═══╣
 // ╚═══╩═══╩═══╝
 
-std::vector<const std::string> tableSetter::tab_0 = {
+std::vector<std::string> tableSetter::tab_0 = {
     "┌", "┬", "┐",
     "├", "┼", "┤",
     "└", "┴", "┘",
@@ -13,7 +15,7 @@ std::vector<const std::string> tableSetter::tab_0 = {
     "└", "─", "┘",
 };
 
-std::vector<const std::string> tableSetter::tab_1 = {
+std::vector<std::string> tableSetter::tab_1 = {
     "┏", "┳", "┓",
     "┣", "╋", "┫",
     "┗", "┻", "┛",
@@ -22,7 +24,7 @@ std::vector<const std::string> tableSetter::tab_1 = {
     "┗", "━", "┛",
 };
 
-std::vector<const std::string> tableSetter::tab_2 = {
+std::vector<std::string> tableSetter::tab_2 = {
     "┎", "┰", "┒",
     "┠", "╂", "┨",
     "┖", "┸", "┚",
@@ -31,7 +33,7 @@ std::vector<const std::string> tableSetter::tab_2 = {
     "┕", "┷", "┙",
 };
 
-std::vector<const std::string> tableSetter::tab_3 = {
+std::vector<std::string> tableSetter::tab_3 = {
     "╔", "╦", "╗",
     "╠", "╬", "╣",
     "╚", "╩", "╝",
@@ -40,7 +42,7 @@ std::vector<const std::string> tableSetter::tab_3 = {
     "╚", "═", "╝",
 };
 
-std::vector<const std::string> tableSetter::tab_4 = {
+std::vector<std::string> tableSetter::tab_4 = {
     "╓", "╥", "╖",
     "╟", "╫", "╢",
     "╙", "╨", "╜",
@@ -49,11 +51,11 @@ std::vector<const std::string> tableSetter::tab_4 = {
     "╘", "╧", "╛",
 };
 
-std::vector<std::vector<const std::string> *> tableSetter::tabs = {
+std::vector<std::vector<std::string> *> tableSetter::tabs = {
     &tab_0, &tab_1, &tab_2, &tab_3, &tab_4
 };
 
-void tableSetter::format(tabulate::Table *table, int width, int height, int tabIndex = 3) {
+void tableSetter::format(tabulate::Table *table, int width, int height, int tabIndex) {
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             (*table)[i][j].format()

@@ -292,4 +292,3 @@ pnum<T> &operator--(pnum<T> &obj) {
     return obj;
 }
 
-#include "../../../src/core/pnum.cpp"

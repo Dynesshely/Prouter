@@ -1,6 +1,7 @@
 #pragma once
 
-#include <prouter/core/pnum.h>
+#include <string>
+#include <vector>
 
 class textBuilder {
 private:
@@ -20,4 +21,3 @@ public:
     static std::vector<std::string> splitByLines(const std::string& str);
 };
 
-#include "../../../src/utils/textBuilder.cpp"

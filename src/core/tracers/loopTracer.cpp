@@ -1,3 +1,10 @@
+#include <prouter/core/tracers/loopTracer.h>
+
+#include <algorithm>
+
+#include <prouter/utils/tableSetter.h>
+#include <prouter/utils/textBuilder.h>
+
 void loopTracer::updateValue(int colIndex, int val) {
     if (rows.back()->pints.size() < colCount)
         rows.back()->pints.emplace_back(val);
@@ -39,15 +46,6 @@ loopTracer &loopTracer::trace(pint *v) {
 
 loopTracer &loopTracer::trace(pint *target, int len, int offset) {
     auto *tracer = new arrayTracer();
-    tracer->trace(target, len).offset(offset);
-    arrays.push_back(tracer);
-    ++arrColCount;
-    return static_cast<loopTracer &>(*this);
-}
-
-template<typename T>
-loopTracer &loopTracer::trace(pnum<T> *target, int len, int offset) {
-    auto tracer = new arrayTracer();
     tracer->trace(target, len).offset(offset);
     arrays.push_back(tracer);
     ++arrColCount;

@@ -9,7 +9,17 @@ set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 set(CMAKE_CXX_STANDARD 20)
 
 ### Project Structure
-add_library(Prouter Prouter.cpp)
+add_library(Prouter
+    src/core/pint.cpp
+    src/core/prouter.cpp
+    src/core/tracers/loopTracer.cpp
+    src/core/tracers/arrayTracer.cpp
+    src/core/controllers/pstepper.cpp
+    src/utils/textBuilder.cpp
+    src/utils/tableSetter.cpp
+    src/utils/consoleUtils.cpp
+    src/algorithms/alg_lcs.cpp
+)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/include)
 
@@ -20,11 +30,8 @@ include_directories(
 )
 
 ### CTest
-add_subdirectory(tests)
-
-include(CTest)
 enable_testing()
-add_test(NAME mytest COMMAND tests)
+add_subdirectory(tests)
 
 ### CPack
 include(CPack)

@@ -3,7 +3,8 @@
 #ifndef PROUTER_CORE_CONTROLLERS_PSTEPPER_H
 #define PROUTER_CORE_CONTROLLERS_PSTEPPER_H
 
-#include <iostream>
+#include <cstdio>
+#include <ostream>
 #include <utility>
 
 class pstepper {
@@ -22,6 +23,5 @@ private:
   pstepper &me() { return static_cast<pstepper &>(*this); }
 };
 
-#include "../../../../src/core/controllers/pstepper.cpp"
 
 #endif

@@ -1,3 +1,6 @@
+#include <prouter/utils/textBuilder.h>
+#include <sstream>
+
 std::string textBuilder::meetLength(std::string str, int len, char c) {
     if (str.length() < len) {
         std::string rst;

@@ -2,6 +2,78 @@
 
 Prouter is a library that allows you to trace your code and visualize your algorithm.
 
+# Build & Integration
+
+## Prerequisites
+
+- **CMake** >= 3.10
+- **C++20** compiler (GCC >= 11, Clang >= 14, MSVC >= 2022)
+- **Git** (to clone submodules)
+
+## Clone & Init
+
+```bash
+git clone <repo-url> Prouter
+cd Prouter
+git submodule update --init --recursive
+```
+
+This pulls the [tabulate](https://github.com/p-ranav/tabulate) library used for terminal table rendering.
+
+## Build from Source
+
+```bash
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
+```
+
+This produces `libProuter.a` in the build directory.
+
+## Use in Your CMake Project
+
+Add Prouter as a subdirectory or install target:
+
+```cmake
+# Option A: add_subdirectory
+add_subdirectory(path/to/Prouter)
+target_link_libraries(your_target PRIVATE Prouter)
+
+# Option B: after `cmake --install`, use find_package
+find_package(Prouter REQUIRED)
+target_link_libraries(your_target PRIVATE Prouter)
+```
+
+Include path in your code:
+
+```cpp
+// All-in-one include (convenient, pulls everything)
+#include <prouter/includes.h>
+
+// Or granular includes
+#include <prouter/core/pint.h>
+#include <prouter/core/structures/pstack.h>
+#include <prouter/algorithms/alg_lcs.h>
+```
+
+> **Note:** Prouter is a **header + compiled** library. Most core types (`pstack`, `pqueue`, `pnum`) are header-only templates. Trace classes (`pint`, `loopTracer`, `arrayTracer`) and algorithms are compiled into `libProuter.a`.
+
+## Architecture
+
+Dependencies flow one-way from low-level utilities to high-level algorithms:
+
+```
+Layer 0: consoleUtils, pstepper, textBuilder   (stdlib only)
+Layer 1: pint                                  (int wrapper with trace history)
+Layer 2: pnum<T>, pstack<T>, pqueue<T>         (templates)
+Layer 3: tableSetter, arrayTracer              (table format & array tracing)
+Layer 4: loopTracer                             (loop iteration tracing)
+Layer 5: prouter (factory), includes.h          (aggregation)
+Layer 6: alg_lcs                                (algorithms)
+```
+
+Every header is self-contained — include what you need, nothing more.
+
 # Usages
 
 ## Includes

@@ -1,4 +1,13 @@
+#include <algorithm>
+#include <cstring>
+#include <map>
+#include <utility>
+
 #include <prouter/algorithms/alg_lcs.h>
+#include <prouter/core/controllers/pstepper.h>
+#include <prouter/utils/consoleUtils.h>
+
+#include <tabulate/table.hpp>
 
 void alg_lcs::init() {
     if (str_a.length() > str_b.length())
@@ -120,7 +129,7 @@ alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
     container.add_row({"Longest Common Sequence"});
     container.add_row({table});
 
-    if (finished)
+    if (finished && !results.empty())
         container.add_row({"len: " + std::to_string(results[0].length())});
 
     if (finished)
@@ -140,7 +149,7 @@ alg_lcs &alg_lcs::printLcsTo(std::ostream &stream, bool withMatrices) {
 
 std::vector<std::string> alg_lcs::getResults() { return results; }
 
-int alg_lcs::getLcsLength() { return (int) (results[0].length()); }
+int alg_lcs::getLcsLength() { return results.empty() ? 0 : (int) (results[0].length()); }
 
 alg_lcs::~alg_lcs() {
     for (int i = 0; i <= h; ++i)

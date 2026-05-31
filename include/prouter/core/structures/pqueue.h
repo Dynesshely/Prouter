@@ -3,9 +3,9 @@
 #ifndef PROUTER_CORE_STRUCTURES_PQUEUE_H
 #define PROUTER_CORE_STRUCTURES_PQUEUE_H
 
-#include <algorithm>
-#include <iostream>
+#include <ostream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 
@@ -106,6 +106,5 @@ public:
   }
 };
 
-#include "../../../../src/core/structures/pqueue.cpp"
 
 #endif

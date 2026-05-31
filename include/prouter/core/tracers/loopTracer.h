@@ -6,9 +6,7 @@
 #include <tabulate/table.hpp>
 
 #include <prouter/core/pint.h>
-#include <prouter/utils/tableSetter.h>
 #include <prouter/core/tracers/arrayTracer.h>
-#include <prouter/utils/textBuilder.h>
 
 struct loopRow {
     int loopId{};
@@ -56,4 +54,14 @@ public:
     }
 };
 
-#include "../../../../src/core/tracers/loopTracer.cpp"
+// --- Template method implementations ---
+
+template<typename T>
+loopTracer &loopTracer::trace(pnum<T> *target, int len, int offset) {
+    auto *tracer = new arrayTracer();
+    tracer->trace(target, len).offset(offset);
+    arrays.push_back(tracer);
+    ++arrColCount;
+    return static_cast<loopTracer &>(*this);
+}
+

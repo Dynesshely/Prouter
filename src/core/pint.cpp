@@ -1,3 +1,5 @@
+#include <prouter/core/pint.h>
+
 pint::pint() : value(0) { setValue(0); }
 
 pint::pint(int val) : value(val) { setValue(val); }
@@ -27,12 +29,7 @@ std::string *pint::nameAddress() {
     return &varName;
 }
 
-//pint &pint::traceBy(loopTracer *tracer) {
-//    tracer->trace(this);
-//    return static_cast<pint &>(*this);
-//}
-
-std::string pint::history(const std::string &conj = " -> ") {
+std::string pint::history(const std::string &conj) {
     std::string text;
     for (int k = 0; k < this->historicalValuesCount(); ++k) {
         text += std::to_string((*this)[k]);

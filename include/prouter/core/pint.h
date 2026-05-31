@@ -6,7 +6,6 @@
 #include <vector>
 #include <functional>
 
-#include <prouter/core/tracers/loopTracer.h>
 
 class pint {
 private:
@@ -35,9 +34,7 @@ public:
 
     std::string *nameAddress();
 
-//    pint &traceBy(loopTracer *tracer);
-
-    std::string history(const std::string &conj);
+    std::string history(const std::string &conj = " -> ");
 
     int &operator[](int index);
 
@@ -254,4 +251,3 @@ pint &operator++(pint &obj);
 
 pint &operator--(pint &obj);
 
-#include "../../../src/core/pint.cpp"

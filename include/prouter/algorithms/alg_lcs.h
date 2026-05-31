@@ -3,13 +3,9 @@
 #ifndef PROUTER_ALG_LCS_H
 #define PROUTER_ALG_LCS_H
 
-#include <utility>
-#include <map>
-#include <algorithm>
-
-#include <prouter/utils/consoleUtils.h>
-
-#include <tabulate/tabulate.hpp>
+#include <iostream>
+#include <string>
+#include <vector>
 
 class alg_lcs {
 private:

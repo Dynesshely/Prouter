@@ -1,3 +1,7 @@
+#include <prouter/core/tracers/arrayTracer.h>
+
+#include <prouter/utils/tableSetter.h>
+
 void arrayTracer::recordHistory() {
     if (pint_begin == nullptr) return;
 
@@ -10,32 +14,6 @@ void arrayTracer::recordHistory() {
     }
     text += "]";
     historicalValues.push_back(text);
-}
-
-template<typename T>
-void arrayTracer::recordHistory(pnum<T> *target) {
-    if (target == nullptr) return;
-
-    std::string text;
-    text += "[";
-    for (int i = 0; i < pnum_length; ++i) {
-        text += std::to_string(*(target + i));
-        if (i < pnum_length - 1)
-            text += ", ";
-    }
-    text += "]";
-    historicalValues.push_back(text);
-}
-
-template<typename T>
-void arrayTracer::recordOriginalValue(pnum<T> *target_pnum) {
-    if (target_pnum == nullptr) {
-        recordHistory();
-    } else {
-        recordHistory(target_pnum);
-    }
-    originalValue = historicalValues.front();
-    historicalValues.pop_back();
 }
 
 std::string arrayTracer::name() {
@@ -67,38 +45,9 @@ arrayTracer &arrayTracer::trace(pint *target, int len) {
     return static_cast<arrayTracer &>(*this);
 }
 
-template<typename T>
-arrayTracer &arrayTracer::trace(pnum<T> *target, int len) {
-    if (typeSelected)
-        throw std::logic_error("You can only apply trace target once on each tracer.");
-    else typeSelected = true;
-
-    pnum_length = len;
-
-    recordOriginalValue(target);
-
-    for (int i = 0; i < pnum_length; ++i) {
-        (target + i)->onChanged(
-            [this, target](T val) {
-                recordHistory(target);
-            }
-        );
-    }
-
-    return static_cast<arrayTracer &>(*this);
-}
-
 arrayTracer &arrayTracer::dispose() {
     for (int i = 0; i < pint_length; ++i)
         (pint_begin + i)->onChanged(nullptr);
-    return static_cast<arrayTracer &>(*this);
-}
-
-
-template<typename T>
-arrayTracer &arrayTracer::dispose(pnum<T> *target) {
-    for (int i = 0; i < pnum_length; ++i)
-        (target + i)->onChanged(nullptr);
     return static_cast<arrayTracer &>(*this);
 }
 

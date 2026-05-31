@@ -1,4 +1,4 @@
-#include "../../include/prouter/utils/consoleUtils.h"
+#include <prouter/utils/consoleUtils.h>
 
 void consoleUtils::eraseLines(int count, std::ostream &stream) {
     if (count <= 0) return;

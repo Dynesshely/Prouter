@@ -3,9 +3,16 @@
 #ifndef PROUTER_CORE_STRUCTURES_PSTACK_H
 #define PROUTER_CORE_STRUCTURES_PSTACK_H
 
-#include <stack>
+#include <algorithm>
+#include <functional>
+#include <ostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 #include <tabulate/table.hpp>
+
+#include <prouter/utils/textBuilder.h>
 
 template<typename T>
 class pstack {
@@ -140,6 +147,5 @@ public:
     }
 };
 
-#include "../../../../src/core/structures/pstack.cpp"
 
 #endif
